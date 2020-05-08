@@ -133,4 +133,4 @@ export PATH="$PATH:$HOME/.Meta/scripts"
 #source ~/.cache/wal/colors-tty.sh
 
 # Git for dotfiles
-alias config='/usr/bin/git --git-dir=$HOME/.Meta/dotfiles --work-tree=$HOME'
+alias dots='/usr/bin/git --git-dir=$HOME/.Meta/dotfiles --work-tree=$HOME'
