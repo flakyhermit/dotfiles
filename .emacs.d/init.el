@@ -18,7 +18,7 @@
 ;; Disable the ugly Emacs bull and the info
 (setq inhibit-startup-message t)
 ;; set global face settings
-(set-face-attribute 'variable-pitch nil :family "IBM Plex Sans" :height 105 :weight 'semi-bold)
+(set-face-attribute 'variable-pitch nil :family "IBM Plex Sans" :height 105 :weight 'medium)
 (set-face-attribute 'fixed-pitch nil :family "JetBrains Mono" :height 90 :weight 'semi-bold)
 (set-face-attribute 'default nil :family "JetBrains Mono" :height 90 :weight 'semi-bold)
 ;; Global keybindings
@@ -46,11 +46,18 @@
 (use-package org
   :config
   (set-face-attribute 'org-document-title nil :family "IBM Plex Serif" :height 140 :weight 'semi-bold)
-  (set-face-attribute 'org-document-title nil :family "IBM Plex Serif" :height 140 :weight 'semi-bold)
-  (org-indent-mode))
+  (set-face-attribute 'org-level-1 nil :family "IBM Plex Serif" :height 120 :weight 'semi-bold))
+
+(add-hook 'org-mode-hook
+	  (lambda ()
+	    (setq left-margin-width 2)))
 
 (use-package org-superstar
-  :hook org-mode)
+  :init (add-hook 'org-mode-hook #'org-superstar-mode))
+(use-package org-indent
+  :init (add-hook 'org-mode-hook #'org-indent-mode))
+(use-package mixed-pitch
+  :init (add-hook 'org-mode-hook #'mixed-pitch-mode))
 
 ;; org-roam
 (use-package org-roam
