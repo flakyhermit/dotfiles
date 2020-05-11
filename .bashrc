@@ -128,7 +128,7 @@ export EDITOR="vim"
 export XDG_CURRENT_DESKTOP=lxqt
 export PROJECTS="$HOME/Projects/"
 export SCRIPTDIR="$HOME/.Meta/scripts"
-export PATH="$PATH:$HOME/.Meta/scripts"
+export PATH="$PATH:$HOME/.Meta/scripts:$HOME/.software"
 #(cat ~/.cache/wal/sequences &)
 #source ~/.cache/wal/colors-tty.sh
 
