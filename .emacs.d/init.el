@@ -14,7 +14,7 @@
 (menu-bar-mode 0)
 (scroll-bar-mode 0)
 (global-visual-line-mode t)
-;; load
+;; set theme
 (load-theme 'doom-one t)
 ;; Disable the ugly Emacs bull and the info
 (setq inhibit-startup-message t)
@@ -41,9 +41,11 @@
 	 ("C-x p n" . projectile-add-known-project)
 	 ("C-x p p" . projectile-switch-project))
   :config (setq projectile-completion-system 'ivy)
-          (setq projectile-mode-line '(:eval (format " Proj[%s]" (projectile-project-name)))))
+          (setq projectile-mode-line-function '(lambda () (format " [%s]" (projectile-project-name)))))
+
 ;; 2. magit
-(global-set-key (kbd "C-x g") 'magit-status)
+(use-package magit
+  :bind ("C-x g" . magit-status))
 ;; org-mode
 (use-package org
    :config
@@ -102,8 +104,11 @@
 
 ;; delight
 (use-package delight
-  :init (delight '((projectile-mode " proj" projectile)
-		   (evil-snipe-mode "sn" "evil-snipe"))))
+  :init (delight '((org-roam-mode " roam" org-roam)
+		   (emacs-lisp-mode "elisp" :major)
+		   (eldoc-mode nil "eldoc")
+		   (visual-line-mode "" t)
+		   (undo-tree-mode "" undo-tree))))
 
 ;; olivetti
 (defun xaf-olivetti-mode-setup()
@@ -114,7 +119,9 @@
   :config (setq olivetti-body-width 120)
   :init (add-hook 'olivetti-mode-hook #'xaf-olivetti-mode-setup))
 
-(evil-mode)
+;; start modes
+(evil-mode 1)
+(projectile-mode 1)
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
