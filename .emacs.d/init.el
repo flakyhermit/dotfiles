@@ -32,17 +32,18 @@
 ;; Enable line numbers by default
 ;; (global-display-line-numbers-mode)
 
+(require 'use-package)
 ;; Package configurationsx
 ;; 1. projectile
-(projectile-mode +1)
-(setq projectile-completion-system 'ivy)
-(define-key projectile-mode-map (kbd "C-x p") 'projectile-command-map)
-(global-set-key (kbd "C-x p n") 'projectile-add-known-project)  ;; overrides find-other-file
+(use-package projectile
+  :bind (("C-x p" . projectile-mode)
+	 :map projectile-mode-map
+	 ("C-x p n" . projectile-add-known-project)
+	 ("C-x p p" . projectile-switch-project))
+  :config (setq projectile-completion-system 'ivy)
+          (setq projectile-mode-line '(:eval (format " Proj[%s]" (projectile-project-name)))))
 ;; 2. magit
 (global-set-key (kbd "C-x g") 'magit-status)
-;; 3. olivetti
-;; use-package
-(require 'use-package)
 ;; org-mode
 (use-package org
    :config
@@ -96,8 +97,13 @@
 (use-package evil-snipe
   :config (setq evil-snipe-scope 'buffer)
   :init (evil-snipe-mode 1))
-;; EVILuuu-snipe causes problems with magit buffers; override
+;; evil-snipe causes problems with magit buffers; override
 (add-hook 'magit-mode-hook 'turn-off-evil-snipe-override-mode)
+
+;; delight
+(use-package delight
+  :init (delight '((projectile-mode " proj" projectile)
+		   (evil-snipe-mode "sn" "evil-snipe"))))
 
 ;; olivetti
 (defun xaf-olivetti-mode-setup()
@@ -121,7 +127,7 @@
  '(org-roam-directory "~/Documents/org")
  '(package-selected-packages
    (quote
-    (markdown-mode use-package sexy-monochrome-theme projectile org-superstar olivetti nord-theme mixed-pitch magit ivy evil-snipe elpy doom-themes deft company-org-roam color-theme-sanityinc-tomorrow busybee-theme))))
+    (delight markdown-mode use-package sexy-monochrome-theme projectile org-superstar olivetti nord-theme mixed-pitch magit ivy evil-snipe elpy doom-themes deft company-org-roam color-theme-sanityinc-tomorrow busybee-theme))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
