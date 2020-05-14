@@ -4,7 +4,7 @@
 ;; You may delete these explanatory comments.
 ;; Add MELPA repo
 (require 'package)
-(add-to-list 'package-archives '("melpa" . "http://www.mirrorservice.org/sites/melpa.org/packages/") t)
+(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
 (package-initialize)
 
 ;; Set custom theme directory
@@ -13,7 +13,9 @@
 (tool-bar-mode 0)
 (menu-bar-mode 0)
 (scroll-bar-mode 0)
+;; enable basic minor modes
 (global-visual-line-mode t)
+(column-number-mode t)
 ;; set theme
 (load-theme 'doom-one t)
 ;; Disable the ugly Emacs bull and the info
@@ -32,9 +34,19 @@
 ;; Enable line numbers by default
 ;; (global-display-line-numbers-mode)
 
-(require 'use-package)
+;; Major-mode visual hooks
+(add-hook 'prog-mode-hook
+	  (lambda ()
+	    (display-line-numbers-mode)))
+(add-hook 'text-mode-hook
+	  (lambda ()
+	    (display-line-numbers-mode -1)
+	    (variable-pitch-mode 'toggle)))
+
 ;; Package configurationsx
-;; 1. projectile
+(require 'use-package)
+
+;; projectile ---------------------
 (use-package projectile
   :bind (("C-x p" . projectile-mode)
 	 :map projectile-mode-map
@@ -43,10 +55,11 @@
   :config (setq projectile-completion-system 'ivy)
           (setq projectile-mode-line-function '(lambda () (format " [%s]" (projectile-project-name)))))
 
-;; 2. magit
+;; magit --------------------------
 (use-package magit
   :bind ("C-x g" . magit-status))
-;; org-mode
+
+;; org-mode -----------------------
 (use-package org
    :config
     (set-face-attribute 'org-document-title nil :family "Comic Mono" :height 140 :weight 'regular))
@@ -63,7 +76,7 @@
 (use-package mixed-pitch
   :init (add-hook 'org-mode-hook #'mixed-pitch-mode))
 
-;; org-roam
+;; org-roam -----------------------
 (use-package org-roam
       :hook 
       (after-init . org-roam-mode)
@@ -76,65 +89,48 @@
               :map org-mode-map
               (("C-c n i" . org-roam-insert))))
 
-(add-hook 'prog-mode-hook
-	  (lambda ()
-	    (display-line-numbers-mode)))
-(add-hook 'text-mode-hook
-	  (lambda ()
-	    (display-line-numbers-mode -1)
-	    (variable-pitch-mode 'toggle)))
-
-;; deft
-(defun xaf-deft-mode-settings()
-  (display-line-numbers-mode -1))
+;; deft --------------------------
 (use-package deft
   :bind ("<f8>" . deft)
   :commands (deft)
   :config (setq deft-directory "~/Documents/org"
                 deft-extensions '("org")
-		deft-default-extension "org")
-  :init (add-hook 'deft-mode-hook #'xaf-deft-mode-settings))
+		deft-default-extension "org"))
 
-;; evil-snipe
+;; evil-snipe --------------------
 (use-package evil-snipe
   :config (setq evil-snipe-scope 'buffer)
   :init (evil-snipe-mode 1))
 ;; evil-snipe causes problems with magit buffers; override
 (add-hook 'magit-mode-hook 'turn-off-evil-snipe-override-mode)
 
-;; delight
+;; delight -----------------------
 (use-package delight
   :init (delight '((org-roam-mode " roam" org-roam)
 		   (emacs-lisp-mode "elisp" :major)
 		   (eldoc-mode nil "eldoc")
-		   (visual-line-mode "" t)
-		   (undo-tree-mode "" undo-tree))))
+		   (visual-line-mode nil t)
+		   (undo-tree-mode nil undo-tree))))
 
 ;; olivetti
-(defun xaf-olivetti-mode-setup()
-  (display-line-numbers-mode 'toggle)
-  (variable-pitch-mode 'toggle))
 (use-package olivetti
   :bind ("C-x t o" . olivetti-mode)
-  :config (setq olivetti-body-width 120)
-  :init (add-hook 'olivetti-mode-hook #'xaf-olivetti-mode-setup))
+  :config (setq olivetti-body-width 120))
 
 ;; start modes
 (evil-mode 1)
+(ivy-mode 1)
 (projectile-mode 1)
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(custom-safe-themes
-   (quote
-    ("b11699e28cc2f6c34fa6336e67d443be89fadb6a9b60de0b1594f31340ea87e4" "6973f93f55e4a6ef99aa34e10cd476bc59e2f0c192b46ec00032fe5771afd9ad" default)))
- '(ivy-mode t)
  '(org-roam-directory "~/Documents/org")
  '(package-selected-packages
    (quote
-    (delight markdown-mode use-package sexy-monochrome-theme projectile org-superstar olivetti nord-theme mixed-pitch magit ivy evil-snipe elpy doom-themes deft company-org-roam color-theme-sanityinc-tomorrow busybee-theme))))
+    (markdown-mode pdf-tools use-package sexy-monochrome-theme projectile org-superstar olivetti nord-theme mixed-pitch magit ivy evil-snipe evil-easymotion elpy doom-themes delight deft company-org-roam color-theme-sanityinc-tomorrow busybee-theme))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
