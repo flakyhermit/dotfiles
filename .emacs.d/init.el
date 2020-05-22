@@ -26,11 +26,7 @@
 (set-face-attribute 'variable-pitch nil :family "Iosevka Etoile" :height 125 :weight 'regular)
 (set-face-attribute 'fixed-pitch nil :family "IBM Plex Mono" :height 90 :weight 'semi-bold)
 (set-face-attribute 'default nil :family "IBM Plex Mono" :height 110 :weight 'medium)
-(require 'markdown-mode)
-(set-face-attribute 'markdown-header-face-1 nil :height 160)
-(set-face-attribute 'markdown-header-face-2 nil :height 130)
-(set-face-attribute 'markdown-header-face-3 nil :height 120)
-(set-face-attribute 'markdown-header-face-4 nil :height 110)
+
 ;; Global keybindings
 (global-set-key (kbd "C-x C-t") 'eshell)
 (global-set-key (kbd "<f9>") 'ansi-term)
@@ -53,11 +49,13 @@
 
 ;; Package configurationsx
 (require 'use-package)
-;; crux
+
+;; crux ---------------------------
 (use-package crux
   :bind ("C-x C-r" . crux-recentf-find-file)
         ("C-x C-K" . crux-kill-other-buffers))
-;; ivy
+
+;; ivy ----------------------------
 (use-package ivy)
 
 ;; projectile ---------------------
@@ -86,24 +84,27 @@
   (setq org-agenda-files '("~/Documents/org" "~/Documents/org/knowledgebase"))
   (setq org-default-notes-file (concat org-directory "/notes.org"))
   (setq org-capture-templates
-	'(("t" "Add a TODO" entry
-	   (file+headline (concat org-directory "/todo.org") "Heading")
+	`(("t" "Add a TODO" entry
+	   (file+headline ,(concat org-directory "/todo.org") "TODO")
 	   "* TODO %?\n")
 	  ("b" "Add a BOOK to the 'considering' list" item
-	   (file+olp "~/Documents/org/lists/books.org" "Non-fiction" "Considering")
+	   (file+olp ,(concat org-directory "/lists/books.org") "Non-fiction" "Considering")
 	   "+  %?\n")
 	  ("r" "Add an ARTICLE to read later" checkitem
-	   (file+datetree "~/Documents/org/lists/read-later.org")
-	   "- [ ] %:annotation %?\n")))
+	   (file+datetree ,(concat org-directory "/lists/read-later.org"))
+	   "- [ ] %:annotation %?\n")
+	  ("e" "An Emacs customization idea" checkitem
+	   (file+headline ,(concat org-directory "/emacs.org") "TODO")
+	   " [ ] %?\n")))
   (set-face-attribute 'org-document-title nil :family "Iosevka Etoile" :height 140 :weight 'semi-bold))
+  (set-face-attribute 'org-code 'default)
 
+;; org-mode enhancements
 (defun custom-readability()
 	    (setq line-spacing 3)
 	    (setq left-margin-width 2)
 	    (setq right-margin-width 2))
-
 (add-hook 'org-mode-hook #'custom-readability)
-
 (use-package org-indent
   :init (add-hook 'org-mode-hook #'org-indent-mode))
 (use-package mixed-pitch
@@ -151,7 +152,7 @@
 		   (visual-line-mode nil t)
 		   (undo-tree-mode nil undo-tree))))
 
-;; olivetti
+;; olivetti ----------------------
 (use-package olivetti
   :bind ("C-x t o" . olivetti-mode)
   :config (setq olivetti-body-width 120))
