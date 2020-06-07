@@ -1,16 +1,18 @@
-; Added by Package.el.  This must come before configurations of
+;; Added by Package.el.  This must come before configurations of
 ;; installed packages.  Don't delete this line.  If you don't want it,
 ;; just comment it out by adding a semicolon to the start of the line.
 ;; You may delete these explanatory comments.
 ;; Add MELPA repo
 (require 'package)
-(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
+;; (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
+(add-to-list 'package-archives '("melpa" . "http://www.mirrorservice.org/sites/melpa.org/packages/") t)
 (package-initialize)
 (require 'use-package)
 ;; (require 'use-package-ensure)
 ;; (setq use-package-always-ensure t)
 ;; Set custom theme directory
 (setq custom-theme-directory "~/.emacs.d/themes")
+(setq backup-directory-alist `(("." . "~/.saves")))
 ;; Disable all GUI crap
 (tool-bar-mode 0)
 (menu-bar-mode 0)
@@ -19,15 +21,16 @@
 (global-visual-line-mode t)
 (column-number-mode t)
 ;; set theme
-(load-theme 'doom-Iosvkem t)
+(load-theme 'doom-nord t)
 ;; Disable the ugly Emacs bull and the info
 (setq inhibit-startup-message t)
 ;; set custom face settings
-(set-face-attribute 'variable-pitch nil :family "Iosevka Etoile" :height 125 :weight 'regular)
+(set-face-attribute 'variable-pitch nil :family "IBM Plex Mono" :height 120 :weight 'regular)
 (set-face-attribute 'fixed-pitch nil :family "IBM Plex Mono" :height 90 :weight 'semi-bold)
-(set-face-attribute 'default nil :family "IBM Plex Mono" :height 110 :weight 'medium)
+(set-face-attribute 'default nil :family "IBM Plex Mono" :height 110 :weight 'regular)
 
 ;; Global keybindings
+(global-set-key (kbd "<backtab>") 'next-buffer)
 (global-set-key (kbd "C-x C-t") 'eshell)
 (global-set-key (kbd "<f9>") 'ansi-term)
 (global-set-key (kbd "C-x K") 'kill-this-buffer)
@@ -80,12 +83,13 @@
   ("C-c o a" . org-agenda)
   ("C-c o c". org-capture)
   :config
-  (setq org-directory "~/Documents/org")
-  (setq org-agenda-files '("~/Documents/org" "~/Documents/org/knowledgebase"))
+  (setq org-directory "~/Dropbox/Notes/org")
+  (setq org-return-follows-link t)
+  (setq org-agenda-files '("~/Dropbox/Notes/org" "~/Dropbox/Notes/org/knowledgebase"))
   (setq org-default-notes-file (concat org-directory "/notes.org"))
   (setq org-capture-templates
 	`(("t" "Add a TODO" entry
-	   (file+headline ,(concat org-directory "/todo.org") "TODO")
+	   (file ,(concat org-directory "/todo.org")) 
 	   "* TODO %?\n")
 	  ("b" "Add a BOOK to the 'considering' list" item
 	   (file+olp ,(concat org-directory "/lists/books.org") "Non-fiction" "Considering")
@@ -96,7 +100,7 @@
 	  ("e" "An Emacs customization idea" checkitem
 	   (file+headline ,(concat org-directory "/emacs.org") "TODO")
 	   " [ ] %?\n")))
-  (set-face-attribute 'org-document-title nil :family "Iosevka Etoile" :height 140 :weight 'semi-bold))
+  (set-face-attribute 'org-document-title nil :family "IBM Plex Mono" :height 160 :weight 'semi-bold))
   (set-face-attribute 'org-code 'default)
 
 ;; org-mode enhancements
@@ -115,7 +119,11 @@
        :hook 
        (after-init . org-roam-mode)
        :custom
-       (org-roam-directory "~/Documents/org/knowledgebase")
+       (org-roam-directory "~/Dropbox/Notes/org/knowledgebase")
+       :config
+       (setq org-roam-capture-templates `(("d" "default" plain #'org-roam-capture--get-point "\n* Meta\n - References: \n - Keywords: %?\n\n* Notes\n" :file-name "%<%Y%m%d%H%M%S>-${slug}" :head "#+TITLE: ${title}
+" :unnarrowed t)))
+
        :bind (:map org-roam-mode-map
                (("C-c n l" . org-roam)
                 ("C-c n f" . org-roam-find-file)
@@ -130,7 +138,7 @@
   ("<f8>" . deft)
   ("C-c o f" . deft-find-file)
   :commands (deft)
-  :config (setq deft-directory "~/Documents/org"
+  :config (setq deft-directory org-directory
 		deft-recursive t
                 deft-extensions '("org")
 		deft-default-extension "org"))
@@ -167,9 +175,13 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   (quote
+    ("bf387180109d222aee6bb089db48ed38403a1e330c9ec69fe1f52460a8936b66" "3577ee091e1d318c49889574a31175970472f6f182a9789f1a3e9e4513641d86" "a92e9da0fab90cbec4af4a2035602208cebf3d071ea547157b2bfc5d9bd4d48d" "3d3807f1070bb91a68d6638a708ee09e63c0825ad21809c87138e676a60bda5d" "bc836bf29eab22d7e5b4c142d201bcce351806b7c1f94955ccafab8ce5b20208" default)))
+ '(org-roam-directory "~/Dropbox/Notes/org/knowledgebase")
  '(package-selected-packages
    (quote
-    (cl-lib use-package tablist sexy-monochrome-theme projectile org-roam olivetti nord-theme monitor mixed-pitch markdown-mode magit ivy evil-snipe evil-easymotion elpy doom-themes delight deft crux color-theme-sanityinc-tomorrow busybee-theme))))
+    (olivetti org-evil evil-org use-package projectile org-roam mixed-pitch markdown-mode magit ivy evil-snipe doom-themes delight deft crux))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
