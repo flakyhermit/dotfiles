@@ -5,7 +5,7 @@
 ;; Add MELPA repo
 (require 'package)
 ;; (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
-(add-to-list 'package-archives '("melpa" . "http://www.mirrorservice.org/sites/melpa.org/packages/") t)
+(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
 (package-initialize)
 (require 'use-package)
 ;; (require 'use-package-ensure)
@@ -26,8 +26,8 @@
 (setq inhibit-startup-message t)
 ;; set custom face settings
 (set-face-attribute 'variable-pitch nil :family "IBM Plex Mono" :height 120 :weight 'regular)
-(set-face-attribute 'fixed-pitch nil :family "IBM Plex Mono" :height 90 :weight 'semi-bold)
-(set-face-attribute 'default nil :family "IBM Plex Mono" :height 110 :weight 'regular)
+(set-face-attribute 'fixed-pitch nil :family "IBM Plex Mono" :height 90 :weight 'regular)
+(set-face-attribute 'default nil :family "IBM Plex Mono" :height 110 :weight 'medium)
 
 ;; Global keybindings
 (global-set-key (kbd "<backtab>") 'next-buffer)
@@ -97,11 +97,11 @@
 	  ("r" "Add an ARTICLE to read later" checkitem
 	   (file+datetree ,(concat org-directory "/lists/read-later.org"))
 	   "- [ ] %:annotation %?\n")
-	  ("e" "An Emacs customization idea" checkitem
-	   (file+headline ,(concat org-directory "/emacs.org") "TODO")
-	   " [ ] %?\n")))
-  (set-face-attribute 'org-document-title nil :family "IBM Plex Mono" :height 160 :weight 'semi-bold))
-  (set-face-attribute 'org-code 'default)
+	   ("e" "An Emacs customization idea" entry
+	   (file+headline ,(concat org-directory "/emacs.org") "To-do")
+	   "* TODO %?\n")))
+  (set-face-attribute 'org-document-title nil :family "IBM Plex Mono" :height 160 :weight 'semi-bold)
+  (set-face-attribute 'org-code 'default))
 
 ;; org-mode enhancements
 (defun custom-readability()
@@ -145,6 +145,10 @@
 
 (add-hook 'deft-mode-hook #'custom-readability)
 
+;; markdown-mode -----------------
+(use-package markdown-mode
+  :init
+  (add-hook 'markdown-mode-hook 'yas-minor-mode))
 ;; evil-snipe --------------------
 (use-package evil-snipe
   :config (setq evil-snipe-scope 'buffer)
@@ -163,7 +167,7 @@
 ;; olivetti ----------------------
 (use-package olivetti
   :bind ("C-x t o" . olivetti-mode)
-  :config (setq olivetti-body-width 120))
+  :custom (olivetti-body-width 120))
 
 ;; start modes
 (evil-mode 1)
@@ -177,11 +181,12 @@
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
    (quote
-    ("bf387180109d222aee6bb089db48ed38403a1e330c9ec69fe1f52460a8936b66" "3577ee091e1d318c49889574a31175970472f6f182a9789f1a3e9e4513641d86" "a92e9da0fab90cbec4af4a2035602208cebf3d071ea547157b2bfc5d9bd4d48d" "3d3807f1070bb91a68d6638a708ee09e63c0825ad21809c87138e676a60bda5d" "bc836bf29eab22d7e5b4c142d201bcce351806b7c1f94955ccafab8ce5b20208" default)))
+    ("9b01a258b57067426cc3c8155330b0381ae0d8dd41d5345b5eddac69f40d409b" "bf387180109d222aee6bb089db48ed38403a1e330c9ec69fe1f52460a8936b66" "3577ee091e1d318c49889574a31175970472f6f182a9789f1a3e9e4513641d86" "a92e9da0fab90cbec4af4a2035602208cebf3d071ea547157b2bfc5d9bd4d48d" "3d3807f1070bb91a68d6638a708ee09e63c0825ad21809c87138e676a60bda5d" "bc836bf29eab22d7e5b4c142d201bcce351806b7c1f94955ccafab8ce5b20208" default)))
+ '(olivetti-body-width 120 t)
  '(org-roam-directory "~/Dropbox/Notes/org/knowledgebase")
  '(package-selected-packages
    (quote
-    (olivetti org-evil evil-org use-package projectile org-roam mixed-pitch markdown-mode magit ivy evil-snipe doom-themes delight deft crux))))
+    (yatemplate yasnippet-snippets yasnippet olivetti org-evil evil-org use-package projectile org-roam mixed-pitch markdown-mode magit ivy evil-snipe doom-themes delight deft crux))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
