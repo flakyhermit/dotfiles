@@ -33,7 +33,7 @@
 (global-set-key (kbd "<backtab>") 'next-buffer)
 (global-set-key (kbd "C-x C-t") 'eshell)
 (global-set-key (kbd "<f9>") 'ansi-term)
-(global-set-key (kbd "C-x K") 'kill-this-buffer)
+(global-set-key (kbd "C-x k") 'kill-this-buffer)
 
 ;; Enable minor modes
 ;; (ivy-mode)
@@ -50,6 +50,9 @@
 ;;	    (flyspell-mode)
 	    (variable-pitch-mode 'toggle)))
 
+(add-hook 'dired-mode-hook
+	  (lambda ()
+	    (define-key dired-mode-map "-" 'dired-up-directory)))
 ;; Package configurationsx
 (require 'use-package)
 
@@ -132,7 +135,7 @@
                (("C-c n i" . org-roam-insert))))
  
 
-;; deft --------------------------
+; deft --------------------------
 (use-package deft
   :bind
   ("<f8>" . deft)
