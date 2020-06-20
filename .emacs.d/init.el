@@ -21,13 +21,14 @@
 (global-visual-line-mode t)
 (column-number-mode t)
 ;; set theme
-(load-theme 'doom-nord t)
+(load-theme 'doom-acario-light t)
 ;; Disable the ugly Emacs bull and the info
-(setq inhibit-startup-message t)
+;; (setq inhibit-startup-message t)
 ;; set custom face settings
-(set-face-attribute 'variable-pitch nil :family "IBM Plex Mono" :height 120 :weight 'regular)
+(set-face-attribute 'variable-pitch nil :family "Dejavu Sans Mono" :height 115 :weight 'regular)
 (set-face-attribute 'fixed-pitch nil :family "IBM Plex Mono" :height 90 :weight 'regular)
 (set-face-attribute 'default nil :family "IBM Plex Mono" :height 110 :weight 'medium)
+(set-face-attribute 'font-lock-comment-face nil :family "IBM Plex Mono" :height 110 :weight 'regular :foreground "#777777")
 
 ;; Global keybindings
 (global-set-key (kbd "<backtab>") 'next-buffer)
@@ -48,7 +49,8 @@
 	  (lambda ()
 	    (display-line-numbers-mode -1)
 ;;	    (flyspell-mode)
-	    (variable-pitch-mode 'toggle)))
+;;	    (variable-pitch-mode 'toggle)
+	    ))
 
 (add-hook 'dired-mode-hook
 	  (lambda ()
@@ -94,6 +96,15 @@
 	`(("t" "Add a TODO" entry
 	   (file ,(concat org-directory "/todo.org")) 
 	   "* TODO %?\n")
+	  ("T" "Just a THOUGHT" entry
+	   (file ,(concat org-directory "/thoughts.org"))
+	   "* %?\n")
+	  ("q" "A QUOTE" entry
+	   (file ,(concat org-directory "/quotes.org"))
+	   "* %?\n\n")
+	  ("b" "Add a BLOG post IDEA" entry
+	   (file ,(concat org-directory "/blog-post-ideas.org")) 
+	   "* %?\n")
 	  ("b" "Add a BOOK to the 'considering' list" item
 	   (file+olp ,(concat org-directory "/lists/books.org") "Non-fiction" "Considering")
 	   "+  %?\n")
@@ -103,11 +114,16 @@
 	   ("e" "An Emacs customization idea" entry
 	   (file+headline ,(concat org-directory "/emacs.org") "To-do")
 	   "* TODO %?\n")))
-  (set-face-attribute 'org-document-title nil :family "IBM Plex Mono" :height 160 :weight 'semi-bold)
+  (set-face-attribute 'org-document-title nil :family "IBM Plex Serif" :height 170 :weight 'semi-bold)
+  (set-face-attribute 'org-document-info-keyword nil :family "IBM Plex Mono" :foreground "#bbbbbb")
+  (set-face-attribute 'org-meta-line nil :family "IBM Plex Mono" :foreground "#bbbbbb")
+  (set-face-attribute 'org-link nil :weight 'semi-bold)
+  (set-face-attribute 'org-list-dt nil :family "IBM Plex Mono")
   (set-face-attribute 'org-code 'default))
 
 ;; org-mode enhancements
 (defun custom-readability()
+  (variable-pitch-mode 'toggle)
 	    (setq line-spacing 3)
 	    (setq left-margin-width 2)
 	    (setq right-margin-width 2))
@@ -117,6 +133,16 @@
 (use-package mixed-pitch
   :init (add-hook 'org-mode-hook #'mixed-pitch-mode))
 
+
+;; org-ref ------------------------
+(use-package org-ref
+  :config
+  (setq reftex-default-bibliography '("~/Dropbox/Notes/org/bibliography/references.bib"))
+  ;; see org-ref for use of these variables
+  (setq org-ref-bibliography-notes "~/Dropbox/bibliography/notes.org"
+	org-ref-default-bibliography '("~/Dropbox/Notes/org/bibliography/references.bib")
+	org-ref-pdf-directory "~/Dropbox/Notes/org/bibliography/bibtex-pdfs/")
+  (set-face-attribute 'org-ref-cite-face nil :weight 'semi-bold))
 ;; org-roam -----------------------
  (use-package org-roam
        :hook 
@@ -124,9 +150,8 @@
        :custom
        (org-roam-directory "~/Dropbox/Notes/org/knowledgebase")
        :config
-       (setq org-roam-capture-templates `(("d" "default" plain #'org-roam-capture--get-point "\n* Meta\n - References: \n - Keywords: %?\n\n* Notes\n" :file-name "%<%Y%m%d%H%M%S>-${slug}" :head "#+TITLE: ${title}
+       (setq org-roam-capture-templates `(("d" "default" plain #'org-roam-capture--get-point "\n- refs :: \n- tags :: %?\n\n" :file-name "%<%Y%m%d%H%M%S>-${slug}" :head "#+TITLE: ${title}
 " :unnarrowed t)))
-
        :bind (:map org-roam-mode-map
                (("C-c n l" . org-roam)
                 ("C-c n f" . org-roam-find-file)
@@ -134,14 +159,19 @@
                :map org-mode-map
                (("C-c n i" . org-roam-insert))))
  
-
+;; If you installed via MELPA
+(use-package org-roam-bibtex
+  :after org-roam
+  :hook (org-roam-mode . org-roam-bibtex-mode)
+  :bind (:map org-mode-map
+         (("C-c n a" . orb-note-actions))))
 ; deft --------------------------
 (use-package deft
   :bind
   ("<f8>" . deft)
   ("C-c o f" . deft-find-file)
   :commands (deft)
-  :config (setq deft-directory org-directory
+  :config (setq deft-directory org-directory 
 		deft-recursive t
                 deft-extensions '("org")
 		deft-default-extension "org"))
@@ -151,7 +181,9 @@
 ;; markdown-mode -----------------
 (use-package markdown-mode
   :init
-  (add-hook 'markdown-mode-hook 'yas-minor-mode))
+  (add-hook 'markdown-mode-hook 'yas-minor-mode)
+  (add-hook 'markdown-mode-hook #'custom-readability))
+
 ;; evil-snipe --------------------
 (use-package evil-snipe
   :config (setq evil-snipe-scope 'buffer)
@@ -184,12 +216,13 @@
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
    (quote
-    ("9b01a258b57067426cc3c8155330b0381ae0d8dd41d5345b5eddac69f40d409b" "bf387180109d222aee6bb089db48ed38403a1e330c9ec69fe1f52460a8936b66" "3577ee091e1d318c49889574a31175970472f6f182a9789f1a3e9e4513641d86" "a92e9da0fab90cbec4af4a2035602208cebf3d071ea547157b2bfc5d9bd4d48d" "3d3807f1070bb91a68d6638a708ee09e63c0825ad21809c87138e676a60bda5d" "bc836bf29eab22d7e5b4c142d201bcce351806b7c1f94955ccafab8ce5b20208" default)))
+    ("99ea831ca79a916f1bd789de366b639d09811501e8c092c85b2cb7d697777f93" "9b01a258b57067426cc3c8155330b0381ae0d8dd41d5345b5eddac69f40d409b" "bf387180109d222aee6bb089db48ed38403a1e330c9ec69fe1f52460a8936b66" "3577ee091e1d318c49889574a31175970472f6f182a9789f1a3e9e4513641d86" "a92e9da0fab90cbec4af4a2035602208cebf3d071ea547157b2bfc5d9bd4d48d" "3d3807f1070bb91a68d6638a708ee09e63c0825ad21809c87138e676a60bda5d" "bc836bf29eab22d7e5b4c142d201bcce351806b7c1f94955ccafab8ce5b20208" default)))
+ '(fancy-splash-image "/home/monk/.local/share/icons/emacs.svg")
  '(olivetti-body-width 120 t)
  '(org-roam-directory "~/Dropbox/Notes/org/knowledgebase")
  '(package-selected-packages
    (quote
-    (yatemplate yasnippet-snippets yasnippet olivetti org-evil evil-org use-package projectile org-roam mixed-pitch markdown-mode magit ivy evil-snipe doom-themes delight deft crux))))
+    (ivy-bibtex bibtex-completion org-roam-server org-roam-bibtex company-org-roam org-ref org-superstar yatemplate yasnippet-snippets yasnippet olivetti org-evil evil-org use-package projectile org-roam mixed-pitch markdown-mode magit ivy evil-snipe doom-themes delight deft crux))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
