@@ -1,4 +1,3 @@
-
 ;; ADDED by Package.el.  This must come before configurations of
 ;; installed packages.  Don't delete this line.  If you don't want it,
 ;; just comment it out by adding a semicolon to the start of the line.
@@ -7,28 +6,33 @@
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
 (package-initialize)
+
 ;; Set custom theme directory
 (setq custom-theme-directory "~/.emacs.d/themes")
 (setq backup-directory-alist `(("." . "~/.saves")))
+
 ;; Set default frame size
-(add-to-list 'default-frame-alist '(height . 36))
-(add-to-list 'default-frame-alist '(width . 105))
+(add-to-list 'default-frame-alist '(height . 34))
+(add-to-list 'default-frame-alist '(width . 110))
+
 ;; Disable all GUI crap
 (tool-bar-mode 0)
 (menu-bar-mode 0)
 (scroll-bar-mode 0)
-;; enable basic minor modes
+
+;; Enable basic minor modes
 (global-visual-line-mode t)
 (column-number-mode t)
-;; set theme
+
+;; Set theme
 (load-theme 'doom-acario-light t)
-;; (load-theme 'zeno t)
+
 ;; Disable the ugly Emacs bull and the info
 (setq inhibit-startup-message t)
-;; set custom face settings
-(set-face-attribute 'variable-pitch nil :family "Dejavu Sans Mono" :height 115 :weight 'regular)
-(set-face-attribute 'fixed-pitch nil :family "IBM Plex Mono" :height 90 :weight 'regular)
-(set-face-attribute 'default nil :family "IBM Plex Mono" :height 110 :weight 'medium)
+
+;; Set custom face settings
+(set-face-attribute 'variable-pitch nil :family "Dejavu Sans Mono" :height 115)
+(set-face-font 'fixed-pitch "IBM Plex Mono 11") (set-face-attribute 'default nil :family "IBM Plex Mono" :height 115)
 (set-face-attribute 'font-lock-comment-face nil :family "IBM Plex Mono" :height 110 :weight 'regular :foreground "#777777")
 
 ;; Global keybindings
@@ -67,6 +71,7 @@
 ;; org-roam, markdown-mode, org-ref, org-roam-bibtex
 ;; deft, olivetti, delight
 (require 'use-package)
+;; (set-face-attribute 'term nil :family "IBM Plex Mono" :height 90))
 
 ;; recentf ------------------------
 (use-package recentf
@@ -79,13 +84,23 @@
 (use-package crux
   :bind
   ("C-x C-r" . crux-recentf-find-file)
+  ("C-x C-a" . crux-sudo-edit)
+  ("<f9>" . crux-visit-term-buffer)
   ("C-x _" . crux-delete-file-and-buffer)
   ("C-x C-K" . crux-kill-other-buffers))
 
 ;; ivy ----------------------------
 (use-package ivy
   :config
+  (set-face-attribute 'ivy-minibuffer-match-face-2 nil :underline t)
   (ivy-mode 1))
+
+;; avy ----------------------------
+(use-package avy
+  :bind
+  ("C-;" . avy-goto-word-1)
+  :config
+  (avy-setup-default))
 
 ;; amx ----------------------------
 (use-package amx
@@ -127,7 +142,7 @@
 ;; yas-- --------------------------
 (use-package yasnippet
   :init
-  (yas-global-mode 1))
+  (yas-global-mode 0))
 
 ;; org-mode -----------------------
 ;; define "C-c o" as a global prefix for org-related commands
@@ -135,19 +150,23 @@
 (global-set-key (kbd "C-c o") 'org-related-map)
 (use-package org
   :bind
-  ("C-c o a" . org-agenda)
-  ("C-c o c". org-capture)
+  ("C-c a" . org-agenda)
+  ("C-c c". org-capture)
+  :custom
+  (org-startup-with-inline-images t)
   :config
   (setq org-directory "~/Dropbox/Notes/org")
   (setq org-return-follows-link t)
-  (setq org-agenda-files '("~/Dropbox/Notes/org" "~/Dropbox/Notes/org/knowledgebase"))
+  (setq org-agenda-files '("~/Dropbox/Notes/org"))
   (setq org-default-notes-file (concat org-directory "/notes.org"))
+  (setq org-todo-keywords
+           '((sequence "TODO" "ACTIVE" "HOLD" "|" "DONE")))
   (setq org-capture-templates
 	`(("t" "Add a TODO" entry
 	   (file ,(concat org-directory "/todo.org")) 
 	   "* TODO %?\n")
 	  ("T" "Just a THOUGHT" entry
-	   (file ,(concat org-directory "/thoughts.org"))
+	   (file ,(concat org-directory "/inbox.org"))
 	   "* %?\n")
 	  ("Q" "A QUOTE" entry
 	   (file ,(concat org-directory "/quotes.org"))
@@ -159,13 +178,13 @@
 	   (file+olp ,(concat org-directory "/lists/books.org") "Non-fiction" "Considering")
 	   "+  %?\n")
 	  ("r" "Add an ARTICLE to read later" checkitem
-	   (file+datetree ,(concat org-directory "/lists/read-later.org"))
+	   (file+olp+datetree ,(concat org-directory "/lists/read-later.org"))
 	   "- [ ] %:annotation %?\n")
 	   ("e" "An Emacs customization idea" entry
 	   (file+headline ,(concat org-directory "/emacs.org") "To-do")
 	   "* TODO %?\n")))
-  (set-face-attribute 'org-document-title nil :family "IBM Plex Serif" :height 170 :weight 'semi-bold)
-  (set-face-attribute 'org-document-info-keyword nil :family "IBM Plex Mono" :foreground "#bbbbbb")
+  ;; (set-face-attribute 'org-document-title nil :family "IBM Plex Serif" :height 170 :weight 'semi-bold)
+  ;; (set-face-attribute 'org-document-info-keyword nil :family "IBM Plex Mono" :foreground "#bbbbbb")
   (set-face-attribute 'org-meta-line nil :family "IBM Plex Mono" :foreground "#bbbbbb")
   (set-face-attribute 'org-link nil :weight 'semi-bold)
   (set-face-attribute 'org-list-dt nil :family "IBM Plex Mono")
@@ -176,8 +195,8 @@
 (defun xstom/editing-mode()
   (variable-pitch-mode 1)
   (setq-local line-spacing 3)
-  (setq-local left-margin-width 3)
-  (setq-local right-margin-width 3))
+  (setq-local left-margin-width 2)
+  (setq-local right-margin-width 2))
 
 (defun xstom/org-mode()
   (xstom/editing-mode)
@@ -207,20 +226,19 @@
   (set-face-attribute 'org-ref-cite-face nil :weight 'semi-bold))
 
 ;; org-roam -----------------------
- (use-package org-roam
-       :hook 
-       (after-init . org-roam-mode)
-       :custom
-       (org-roam-directory "~/Dropbox/Notes/org/knowledgebase")
-       :config
-       (setq org-roam-capture-templates `(("d" "default" plain #'org-roam-capture--get-point "\n- refs :: \n- tags :: %?\n\n" :file-name "%<%Y%m%d%H%M%S>-${slug}" :head "#+title: ${title}\n#+created: \n
-" :unnarrowed t)))
-       :bind (:map org-roam-mode-map
-               (("C-c n l" . org-roam)
-                ("C-c n f" . org-roam-find-file)
-                ("C-c n g" . org-roam-show-graph))
-               :map org-mode-map
-               (("C-c n i" . org-roam-insert))))
+(use-package org-roam
+  :hook 
+  (after-init . org-roam-mode)
+  :custom
+  (org-roam-directory "~/Dropbox/Notes/org/knowledgebase")
+  :config
+  (setq org-roam-capture-templates `(("d" "default" plain #'org-roam-capture--get-point "\n- refs :: \n- tags :: %?\n\n" :file-name "%<%Y%m%d%H%M%S>-${slug}" :head "#+title: ${title}\n#+created: %U\n" :unnarrowed t)))
+  :bind (:map org-roam-mode-map
+          (("C-c n l" . org-roam)
+           ("C-c n f" . org-roam-find-file)
+           ("C-c n g" . org-roam-show-graph))
+          :map org-mode-map
+          (("C-c n i" . org-roam-insert))))
  
 ;; org-roam-bibtex --------------
 (use-package org-roam-bibtex
@@ -234,7 +252,7 @@
 (use-package deft
   :bind
   ("<f8>" . deft)
-  ("C-c o f" . deft-find-file)
+  ("C-c f" . deft-find-file)
   :commands (deft)
   :config
   (setq deft-directory org-directory 
@@ -253,10 +271,11 @@
 
 ;; evil-snipe --------------------
 (use-package evil-snipe
-  :custom
-  (evil-snipe-scope 'buffer)
+  ;; :custom
+  ;; (evil-snipe-scope ')
   :init
   (evil-snipe-mode 1))
+
 ;; evil-snipe causes problems with magit buffers; override
 ;; (add-hook 'magit-mode-hook 'turn-off-evil-snipe-override-mode)
 
@@ -273,6 +292,7 @@
   :bind ("C-x t o" . olivetti-mode)
   :custom (olivetti-body-width 120))
 
+(load "my-faces.el")
 ;; start modes
 (evil-mode 1)
 (custom-set-variables
@@ -286,13 +306,39 @@
     ("99ea831ca79a916f1bd789de366b639d09811501e8c092c85b2cb7d697777f93" "9b01a258b57067426cc3c8155330b0381ae0d8dd41d5345b5eddac69f40d409b" "bf387180109d222aee6bb089db48ed38403a1e330c9ec69fe1f52460a8936b66" "3577ee091e1d318c49889574a31175970472f6f182a9789f1a3e9e4513641d86" "a92e9da0fab90cbec4af4a2035602208cebf3d071ea547157b2bfc5d9bd4d48d" "3d3807f1070bb91a68d6638a708ee09e63c0825ad21809c87138e676a60bda5d" "bc836bf29eab22d7e5b4c142d201bcce351806b7c1f94955ccafab8ce5b20208" default)))
  '(evil-snipe-scope (quote buffer))
  '(fancy-splash-image "/home/monk/.local/share/icons/emacs.svg")
+ '(fci-rule-color "#4E4E4E")
+ '(hl-todo-keyword-faces
+   (quote
+    (("TODO" . "#dc752f")
+     ("NEXT" . "#dc752f")
+     ("THEM" . "#2d9574")
+     ("PROG" . "#4f97d7")
+     ("OKAY" . "#4f97d7")
+     ("DONT" . "#f2241f")
+     ("FAIL" . "#f2241f")
+     ("DONE" . "#86dc2f")
+     ("NOTE" . "#b1951d")
+     ("KLUDGE" . "#b1951d")
+     ("HACK" . "#b1951d")
+     ("TEMP" . "#b1951d")
+     ("FIXME" . "#dc752f")
+     ("XXX+" . "#dc752f")
+     ("\\?\\?\\?+" . "#dc752f"))))
+ '(jdee-db-active-breakpoint-face-colors (cons "#D0D0E3" "#009B7C"))
+ '(jdee-db-requested-breakpoint-face-colors (cons "#D0D0E3" "#005F00"))
+ '(jdee-db-spec-breakpoint-face-colors (cons "#D0D0E3" "#4E4E4E"))
+ '(objed-cursor-color "#D70000")
  '(olivetti-body-width 120 t)
  '(org-roam-directory "~/Dropbox/Notes/org/knowledgebase")
  '(package-selected-packages
    (quote
-    (wc-mode yasnippet-lean hl-todo zeno-theme winum amx ivy-bibtex bibtex-completion org-roam-server org-roam-bibtex company-org-roam org-ref org-superstar yatemplate yasnippet-snippets yasnippet olivetti org-evil evil-org use-package projectile org-roam mixed-pitch markdown-mode magit ivy evil-snipe doom-themes delight deft crux)))
+    (avy dictionary rebecca-theme white-theme spacemacs-theme zen-and-art-theme wc-mode yasnippet-lean hl-todo zeno-theme winum amx ivy-bibtex bibtex-completion org-roam-server org-roam-bibtex company-org-roam org-ref org-superstar yasnippet-snippets yasnippet olivetti org-evil evil-org use-package projectile org-roam mixed-pitch markdown-mode magit ivy evil-snipe doom-themes delight deft crux)))
+ '(pdf-view-midnight-colors (quote ("#b2b2b2" . "#292b2e")))
  '(projectile-completion-system (quote ivy))
- '(recentf-max-saved-items 100))
+ '(recentf-max-saved-items 100)
+ '(rustic-ansi-faces
+   ["#F5F5F9" "#D70000" "#005F00" "#AF8700" "#1F55A0" "#AF005F" "#007687" "#0F1019"])
+ '(safe-local-variable-values (quote ((org-log-done . time)))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
