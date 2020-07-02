@@ -157,7 +157,9 @@
   :config
   (setq org-directory "~/Dropbox/Notes/org")
   (setq org-return-follows-link t)
-  (setq org-agenda-files '("~/Dropbox/Notes/org"))
+  (setq org-agenda-files '("~/Dropbox/Notes/org/todo.org" "~/Dropbox/Notes/org/inbox.org" ))
+  (setq org-refile-targets '(("~/Dropbox/Notes/org/inbox.org" :maxlevel . 1)))
+  (setq org-refile-use-outline-path 'nil)
   (setq org-default-notes-file (concat org-directory "/notes.org"))
   (setq org-todo-keywords
            '((sequence "TODO" "ACTIVE" "HOLD" "|" "DONE")))
