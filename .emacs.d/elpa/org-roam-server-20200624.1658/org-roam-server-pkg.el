@@ -1,0 +1,14 @@
+(define-package "org-roam-server" "20200624.1658" "Org Roam Database Visualizer"
+  '((org-roam "1.2.0")
+    (org "9.3")
+    (emacs "26.1")
+    (simple-httpd "1.5.1")
+    (s "1.12.0"))
+  :commit "7617ac01a1b7bad61407916ef03eda95c17da7c9" :authors
+  '(("Göktuğ Karakaşlı" . "karakasligk@gmail.com"))
+  :maintainer
+  '("Göktuğ Karakaşlı" . "karakasligk@gmail.com")
+  :url "https://github.com/goktug97/org-roam-server")
+;; Local Variables:
+;; no-byte-compile: t
+;; End:

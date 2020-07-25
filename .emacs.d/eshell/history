@@ -1,0 +1,128 @@
+(setq a 1)
+length 2
+ls
+vim buddy-with-benefits.txt
+length buddy-with-benefits.txt 
+echo *.py
+echo *.txt
+setq a 24
+a
+message a
+python --version
+mod
+mod 5 2
+clear
+ls
+cd ..
+ls
+cd r4r/
+ls
+neofetch 
+for
+ls
+cat Uh,\ hi.md 
+find-file Uh,\ hi.md 
+with-temp-file Uh,\ hi.md 
+clea
+clear
+c
+a
+setq q 12
+q
+which mod
+which for
+which ls
+ls -l
+dired
+dired .
+cd ..
+ls
+du -hs
+which du
+du
+cd org/
+ls
+du -hs knowledgebase.tar.gz
+du -hs knowledgebase
+du -hs knowledgebase -r
+du -hd 2 knowledgebase
+ls -la
+cd bibliography/
+ls
+crux-open-with references.bib 
+ls
+dired *.org
+cd ..
+dired *.org
+dired *.gz
+ls *(/)
+ls (L)
+ls L
+ls +L
+ls (+L)
+ls
+ls
+cd ..
+ls
+cd Bloh
+ls
+cd ..
+ls
+find-f
+directory-file-name 
+directory-file-name .
+directory-files
+directory-files .
+ls
+cd Bash/
+ls
+cat bash_cheatsheet.sh
+clear
+ls
+cd Simple-Subreddit-Image-Downloader/
+ls
+vim rdit.sh 
+ls
+cd rwe
+cd request/
+ls
+uptime -p
+uptime -p | awk '{ print  $2 $3}'
+uptime -p | awk '{ print $2 $4}'
+uptime -p | awk '{print $2:$4}'
+uptime -p | awk '{print $2\:$4}'
+uptime -p | awk '{print $2/:$4}'
+uptime -p | awk '{print $2\\;$4}'
+uptime -p | awk '{print $2$4}'
+uptime -p | awk '{print $2,$4}'
+uptime -p | awk '{print $2-$4}'
+uptime -p | awk '{print $2~$4}'
+uptime -p | awk '{print $2/$4}'
+uptime -p | awk '{print $2 ? $4}'
+uptime -p | awk '{print $2+$4}'
+uptime -p | awk '{print $2$4}'
+uptime -p | awk '{print $2 $4}'
+uptime -p | awk '{print $2 $4} -sep'
+uptime -p | awk '{print $20$4}'
+uptime -p | awk '{print $2#$4}'
+uptime -p | awk '{print $2 "" $4}'
+uptime -p | awk '{print $2 "-" $4}'
+uptime -p | awk '{print $2 "/" $4}'
+uptime -p | awk '{print $2 "," $4}'
+uptime -p
+uptime -p | cut 10
+uptime -p | cut -d 10
+uptime -p | cut -c 10
+uptime -p | cut -c 2
+uptime -p | cut -c 2-10
+uptime -p | cut -c 4-10
+uptime -p | cut -c 4-
+uptime -p | awk '{ print $2 "hr" $4 "min" }'
+uptime -p | awk '{ print $2 "hr, " $4 "min" }'
+uptime -p | awk '{ print $2 " hr" $4 " min" }'
+uptime -p | awk '{ print $2 " hr " $4 " min" }'
+uptime -p | awk '{ print $2 " hr " $4 " min" }'
+ls
+./autostart 
+clear
+dots

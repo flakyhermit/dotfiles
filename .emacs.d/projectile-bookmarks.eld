@@ -1,0 +1,1 @@
+("~/Dropbox/Notes/org/" "~/Dropbox/Code/Emacs Lisp/" "~/Dropbox/Personal/Journal/" "~/Dropbox/Notes/org/lists/" "~/Projects/hawaii-colonization/" "~/.emacs.d/elpa/pdf-tools-20200512.1524/build/server/" "~/Projects/.emacs.d/" "~/Dropbox/Notes/book_club/" "~/Projects/elegant-emacs/" "/etc/")
