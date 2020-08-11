@@ -1,128 +1,128 @@
-(setq a 1)
-length 2
+go run snoowall-cli.go wallpaper
+go run snoowall-cli.go wallpaper
+go run snoowall-cli.go wallpaper
+go run snoowall-cli.go wallpaper
+go run snoowall-cli.go earthporn
+go build snoowall-cli.go
+go run snoowall-cli.go
+go run snoowall-cli.go wallpaper
+go build snoowall-cli.go
+go build snoowall-cli.go
+go build snoowall-cli.go
+go build snoowall-cli.go
+go run snoowall-cli.go
+go run snoowall-cli.go
+go run snoowall-cli.go
+go build snoowall-cli.go
+go build snoowall-cli.go
+go run snoowall-cli.go
 ls
-vim buddy-with-benefits.txt
-length buddy-with-benefits.txt 
-echo *.py
-echo *.txt
-setq a 24
-a
-message a
-python --version
-mod
-mod 5 2
+cat notes 
+go run test.go
+go run test.go
+go run test.go
+go run test.go
+go run test.go
+go run test.go
+go run test.go
+go build snoowall-cli.go
+go build snoowall-cli.go
+go build snoowall-cli.go
+./snoowall-cli.go
+go run snoowall-cli.go
+go run snoowall-cli.go
+go build snoowall-cli.go
+go run snoowall-cli.go
+go run snoowall-cli.go
+go run snoowall-cli.go skyporn
+go run snoowall-cli.go skyporn
+ls
 clear
 ls
 cd ..
 ls
-cd r4r/
-ls
-neofetch 
-for
-ls
-cat Uh,\ hi.md 
-find-file Uh,\ hi.md 
-with-temp-file Uh,\ hi.md 
-clea
-clear
-c
-a
-setq q 12
-q
-which mod
-which for
-which ls
-ls -l
-dired
-dired .
 cd ..
 ls
-du -hs
-which du
-du
-cd org/
+ufetch 
+dots add init.el
 ls
-du -hs knowledgebase.tar.gz
-du -hs knowledgebase
-du -hs knowledgebase -r
-du -hd 2 knowledgebase
-ls -la
-cd bibliography/
+cd ../
 ls
-crux-open-with references.bib 
+cd csv_process/
 ls
-dired *.org
-cd ..
-dired *.org
-dired *.gz
-ls *(/)
-ls (L)
-ls L
-ls +L
-ls (+L)
+cd ../polybar-cmus/
 ls
+cat cmus.sh 
+cd ../kindle-clippings-manager/
 ls
-cd ..
+cd clippings-library/
 ls
-cd Bloh
+cat Paul\ Joannides\ -\ Guide\ To\ Getting\ It\ On:\ 9th\ edition.txt 
 ls
-cd ..
-ls
-find-f
-directory-file-name 
-directory-file-name .
-directory-files
-directory-files .
-ls
-cd Bash/
-ls
-cat bash_cheatsheet.sh
-clear
-ls
-cd Simple-Subreddit-Image-Downloader/
-ls
-vim rdit.sh 
-ls
-cd rwe
 cd request/
 ls
-uptime -p
-uptime -p | awk '{ print  $2 $3}'
-uptime -p | awk '{ print $2 $4}'
-uptime -p | awk '{print $2:$4}'
-uptime -p | awk '{print $2\:$4}'
-uptime -p | awk '{print $2/:$4}'
-uptime -p | awk '{print $2\\;$4}'
-uptime -p | awk '{print $2$4}'
-uptime -p | awk '{print $2,$4}'
-uptime -p | awk '{print $2-$4}'
-uptime -p | awk '{print $2~$4}'
-uptime -p | awk '{print $2/$4}'
-uptime -p | awk '{print $2 ? $4}'
-uptime -p | awk '{print $2+$4}'
-uptime -p | awk '{print $2$4}'
-uptime -p | awk '{print $2 $4}'
-uptime -p | awk '{print $2 $4} -sep'
-uptime -p | awk '{print $20$4}'
-uptime -p | awk '{print $2#$4}'
-uptime -p | awk '{print $2 "" $4}'
-uptime -p | awk '{print $2 "-" $4}'
-uptime -p | awk '{print $2 "/" $4}'
-uptime -p | awk '{print $2 "," $4}'
-uptime -p
-uptime -p | cut 10
-uptime -p | cut -d 10
-uptime -p | cut -c 10
-uptime -p | cut -c 2
-uptime -p | cut -c 2-10
-uptime -p | cut -c 4-10
-uptime -p | cut -c 4-
-uptime -p | awk '{ print $2 "hr" $4 "min" }'
-uptime -p | awk '{ print $2 "hr, " $4 "min" }'
-uptime -p | awk '{ print $2 " hr" $4 " min" }'
-uptime -p | awk '{ print $2 " hr " $4 " min" }'
-uptime -p | awk '{ print $2 " hr " $4 " min" }'
+cd ..
+ufetch 
 ls
-./autostart 
-clear
+git clone git@gitlab.com:flakyhermit/web-blog-jeweljames.git
+ls
+cd we
+cd web-blog-jeweljames/
+ls
+du -hs
+cd ..
+mv web-blog-jeweljames/ ~/Dropbox/Projects/
+cd ../Dropbox/Projects/
+ls
+cd web-blog-jeweljames/
+hugo
+cd ..
+cd ..
+hugo server -D
+hugo new posts/org-ninjutsu-beginners.md
+hugo new posts/org-ninjutsu-beginners.md
+hugo server -D
+ls
+cd orgzly/
+ls
+cat Inbox.org 
+pkill polybar
+ufetch 
+echo $SHELL
+fish
+ls
+cd knowledgebase/
+ls
+cd ../../
+ls
+cd blog_posts/
+ls
+cd ../..
+ls
+cd Notes/
+ls
+cd book_club/
+ls
+cat remains_of_the_day.txt 
+ls
+./clippings-library/
+cd ..
+python main.py 
+ls
+ufetch 
+ls
+ls -l
+cd clippings-library/
+ls
+cat Russell Brand - Recovery.txt 
+ls
+cd ../
+ls
+cat metadata.calibre 
+cd Projects/
+ls
+hugo server
+hugo server -D
+cd ../..
+hugo server -D
 dots

@@ -2,7 +2,17 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("references.bib"
+(("polybar/config"
+ (filename . "~/.config/polybar/config")
+ (front-context-string . "================")
+ (rear-context-string)
+ (position . 1))
+("i3/config"
+ (filename . "~/.config/i3/config")
+ (front-context-string . "\n# start dmenu (")
+ (rear-context-string . "od+Shift+q kill\n")
+ (position . 1329))
+("references.bib"
  (filename . "~/Dropbox/Notes/org/bibliography/references.bib")
  (front-context-string . "\n@article{weir-a")
  (rear-context-string)
@@ -13,20 +23,15 @@
  (rear-context-string . "Bookmarks bmenu\n")
  (position . 5085))
 ("org-refile-last-stored"
- (filename . "~/Dropbox/Notes/org/todo.org")
- (front-context-string . "** TODO Ask on E")
- (rear-context-string . " HOVER domain!!\n")
- (position . 81))
+ (filename . "~/Dropbox/Notes/org/inbox.org")
+ (front-context-string . "** I've started ")
+ (rear-context-string . "onely.\n* August\n")
+ (position . 13028))
 ("org-capture-last-stored"
- (filename . "~/Dropbox/Notes/org/emacs.org")
- (front-context-string . "** face inherita")
- (rear-context-string . "rent directory \n")
- (position . 2381))
-("Journal"
- (filename . "~/Dropbox/Personal/Journal/")
- (front-context-string . ".directory\n  -rw")
- (rear-context-string . "72 Dec 12  2018 ")
- (position . 463))
+ (filename . "~/Dropbox/Notes/org/knowledgebase/20200811152836-political_theory.org")
+ (front-context-string . "#+title: Politic")
+ (rear-context-string)
+ (position . 1))
 ("init.el"
  (filename . "~/.emacs.d/init.el")
  (front-context-string . "set-face-attribu")

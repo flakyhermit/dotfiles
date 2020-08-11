@@ -1,0 +1,3 @@
+alias warn:  $*
+alias ff find-file
+alias fif find-file

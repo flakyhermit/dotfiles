@@ -1,0 +1,10 @@
+# key: <book
+# name: book
+# --
+${1:Title} - ${2:Author}
+:PROPERTIES:
+:ADDED: `(format-time-string "[%Y-%m-%d %a]")`
+:AUTHOR: $2
+:RATING: 0.0
+:END:
+$0

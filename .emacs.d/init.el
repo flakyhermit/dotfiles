@@ -20,7 +20,7 @@
 ;; Disable all GUI crap
 (tool-bar-mode 0)
 (menu-bar-mode 0)
-(scroll-bar-mode 0)
+;; (scroll-bar-mode 0)
 
 ; Enable basic minor modes
 (global-visual-line-mode t)
@@ -32,10 +32,10 @@
 (setq initial-scratch-message nil)
 
 ;; Set theme
-(load-theme 'leuven t)
+(load-theme 'modus-operandi t)
 
 ;; Set custom face settings
-(set-face-attribute 'default nil :font "Jetbrains Mono-11" :foreground "#222222")
+(set-face-attribute 'default nil :font "Jetbrains Mono-11" )
 (set-face-attribute 'variable-pitch nil :font "Iosevka Etoile-11.5")
 (set-face-attribute 'fixed-pitch nil :inherit 'default)
 (set-face-attribute 'font-lock-comment-face nil :inherit 'default :italic nil)
@@ -48,9 +48,18 @@
 (global-set-key (kbd "C-)") 'evil-next-buffer)
 (global-set-key (kbd "C-x d") (lambda() (interactive) (dired ".")))
 (global-set-key (kbd "C-x C-d") 'dired)
+(global-set-key (kbd "C-c d") 'sdcv-search-pointer)
 
 ;; Enable line numbers by default
 ;; (global-display-line-numbers-mode)
+
+;; Safe-local variables
+(setq safe-local-variable-values '((avy-words . s)
+				   (org-num-max-level . 1)
+				   (org-num-mode . t)
+				   (display-line-numbers . t)
+				   (org-log-refile . time)
+				   (org-log-done . time)))
 
 ;; Custom function definitions
 (defun custom/editing-mode()
@@ -90,7 +99,8 @@
 (define-key global-map (kbd "<f9>") 'crux-visit-term-buffer)
 
 ;; ivy ----------------------------
-(setq ivy-height 13)
+(setq ivy-height 13
+      ivy-wrap t)
 (ivy-mode 1)
 (add-hook 'ivy-mode-hook #'ivy-rich-mode)
 
@@ -121,7 +131,7 @@
 
 ;; persp-mode ---------------------
 (setq persp-nil-name "-")
-(persp-mode 1)
+(persp-mode 0)
 
 ;; magit --------------------------
 (define-key ctl-x-map (kbd "g") 'magit-status)
@@ -162,9 +172,9 @@
       org-todo-keywords '((sequence "TODO(t)" "ACTV(a)" "REFL(r)" "HOLD(h)" "|" "DONE(d)"))
       org-inbox-file "~/Dropbox/Notes/org/inbox.org"
       org-agenda-files '("~/Dropbox/Notes/org")
-      org-refile-targets '((org-inbox-file :maxlevel . 1)
+      org-refile-targets '((org-inbox-file :maxlevel . 2)
 			   ("~/Dropbox/Notes/org/emacs.org" :maxlevel . 1)
-			   ("~/Dropbox/Notes/org/todo.org" :maxlevel . 1)
+			   ("~/Dropbox/Notes/org/todo.org" :maxlevel . 2)
 			   ("~/Dropbox/Notes/org/lists/books.org" :maxlevel . 3))
       org-startup-with-inline-images t
     ;; org-indent-indentation-per-level 1
@@ -198,8 +208,15 @@
 (define-key org-mode-map (kbd "C-c C-q") 'counsel-org-tag)
 (add-hook 'org-mode-hook #'org-indent-mode)
 (add-hook 'org-mode-hook #'yas-minor-mode)
-;; (add-hook 'org-mode-hook #'org-bullets-mode)
+(add-hook 'org-mode-hook #'org-bullets-mode)
 (add-hook 'org-mode-hook #'mixed-pitch-mode)
+
+;; org-journal --------------------
+(setq org-journal-dir (concat org-directory "/journal")
+      org-journal-file-type 'monthly
+      org-journal-date-format "%A, %d %B %Y"
+      org-journal-prefix-key (kbd "C-c j"))
+(global-set-key (kbd "C-c j n") 'org-journal-new-entry)
 
 ;; anki-editor --------------------
 (require 'anki-editor)
@@ -236,7 +253,6 @@
 (define-key mode-specific-map (kbd "n g") 'org-roam-show-graph)
 (define-key mode-specific-map (kbd "n i") 'org-roam-insert)
 (add-hook 'org-roam-mode-hook 'org-roam-bibtex-mode)
-(add-hook 'org-roam-backlinks-mode-hook 'org-shifttab)
 
 ;; org-roam-bibtex ----------------
 (org-roam-bibtex-mode 1)
@@ -247,9 +263,6 @@
      :head "#+title: ${title}\n#+roam_key: ${ref}\n\n" ; <--
      :unnarrowed t)))
 
-;; helm-boos
-(require 'helm-books)
-(setq helm-books-custom-format "#title# - #author#")
 ;; delight ------------------------
 (delight '((emacs-lisp-mode "elisp" :major)
 	   (org-indent-mode nil org-indent)
@@ -264,7 +277,7 @@
 	   (visual-line-mode nil t)
 	   (undo-tree-mode nil undo-tree)))
 
-(load "my-faces.el")
+(load "./my-faces.el")
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -275,14 +288,13 @@
  '(ansi-color-names-vector
    ["#1B2B34" "#EC5f67" "#99C794" "#FAC863" "#6699CC" "#E27E8D" "#5FB3B3" "#D8DEE9"])
  '(ansi-term-color-vector
-   [unspecified "#FFFFFF" "#d15120" "#5f9411" "#d2ad00" "#6b82a7" "#a66bab" "#6b82a7" "#505050"])
+   [unspecified "#FFFFFF" "#d15120" "#5f9411" "#d2ad00" "#6b82a7" "#a66bab" "#6b82a7" "#505050"] t)
  '(custom-safe-themes
    (quote
     ("a27c00821ccfd5a78b01e4f35dc056706dd9ede09a8b90c6955ae6a390eb1c1e" default)))
  '(elfeed-feeds
    (quote
     ("https://feeds.feedburner.com/TechCrunch/" "https://www.theverge.com/" "https://longreads.com/")))
- '(eyebrowse-mode nil)
  '(fci-rule-character-color "#d9d9d9")
  '(fci-rule-color "#C0C5CE")
  '(flymake-error-bitmap
@@ -323,34 +335,13 @@
  '(objed-cursor-color "#EC5f67")
  '(org-agenda-files
    (quote
-    ("~/Dropbox/Notes/org/knowledgebase/alarcon-online-2019.org" "~/Dropbox/Notes/org/knowledgebase/20200528154104-outside_view.org" "/home/monk/Dropbox/Notes/org/archlinux.org" "/home/monk/Dropbox/Notes/org/blog-post-ideas.org" "/home/monk/Dropbox/Notes/org/events.org" "/home/monk/Dropbox/Notes/org/inbox.org" "/home/monk/Dropbox/Notes/org/observations.org" "/home/monk/Dropbox/Notes/org/podcasting_gear.org" "/home/monk/Dropbox/Notes/org/quotes.org" "/home/monk/Dropbox/Notes/org/r4r.org" "/home/monk/Dropbox/Notes/org/studies.org" "/home/monk/Dropbox/Notes/org/templates-for-dilemmas.org" "/home/monk/Dropbox/Notes/org/test.org" "/home/monk/Dropbox/Notes/org/thoughts.org" "/home/monk/Dropbox/Notes/org/todo.org")))
+    ("~/Dropbox/Notes/org/vocabulary.org" "/home/monk/Dropbox/Notes/org/anand_podcast.org" "/home/monk/Dropbox/Notes/org/archlinux.org" "/home/monk/Dropbox/Notes/org/blog-post-ideas.org" "/home/monk/Dropbox/Notes/org/emacs-article.org" "/home/monk/Dropbox/Notes/org/emacs.org" "/home/monk/Dropbox/Notes/org/events.org" "/home/monk/Dropbox/Notes/org/higher-studies.org" "/home/monk/Dropbox/Notes/org/inbox.org" "/home/monk/Dropbox/Notes/org/latex.org" "/home/monk/Dropbox/Notes/org/minecraft.org" "/home/monk/Dropbox/Notes/org/music_theory.org" "/home/monk/Dropbox/Notes/org/observations.org" "/home/monk/Dropbox/Notes/org/podcasting_gear.org" "/home/monk/Dropbox/Notes/org/quotes.org" "/home/monk/Dropbox/Notes/org/r4r.org" "/home/monk/Dropbox/Notes/org/studies.org" "/home/monk/Dropbox/Notes/org/templates-for-dilemmas.org" "/home/monk/Dropbox/Notes/org/test.org" "/home/monk/Dropbox/Notes/org/thoughts.org" "/home/monk/Dropbox/Notes/org/todo.org")))
  '(package-selected-packages
    (quote
-    (dired-single dired-du helm-dired-history ivy-dired-history org-journal twilight-theme twilight-bright-theme vs-light-theme csv-mode anki-vocabulary go-complete go-eldoc golint flymake-golangci go-mode python-x evil-ediff svg-mode-line-themes twilight-anti-bright-theme weyland-yutani-theme modus-operandi-theme org-bullets org-superstar modus-vivendi-theme magit-find-file tramp-term flymake-shell lsp-mode company-dict dired-icon helm-books anki-connect anki-editor org-capture-pop-frame counsel-org-capture-string ivy-omni-org crontab-mode poet-theme helpful dired-hide-dotfiles hide-mode-line sexy-monochrome-theme yoshi-theme color-theme-sanityinc-tomorrow panda-theme zen-and-art-theme elfeed elfeed-score org-beautify-theme org-super-agenda hl-sentence evil-goggles evil-magit zotelo ivy-rich neotree zweilight-theme command-log-mode persp-mode persp-mode-projectile-bridge zeno-theme yasnippet-snippets winum white-theme wc-mode use-package spacemacs-theme shrink-path request rebecca-theme projectile org-roam-server org-roam-bibtex org-ref org-evil olivetti mixed-pitch markdown-mode magit ivy-bibtex hl-todo evil-snipe evil-org emacsql-sqlite doom-themes dictionary delight deft crux counsel company-org-roam avy amx all-the-icons)))
+    (edit-indirect ivy-avy ivy-hydra sdcv dired-single dired-du helm-dired-history ivy-dired-history org-journal twilight-theme twilight-bright-theme vs-light-theme csv-mode anki-vocabulary go-complete go-eldoc golint flymake-golangci go-mode python-x evil-ediff svg-mode-line-themes twilight-anti-bright-theme weyland-yutani-theme modus-operandi-theme org-bullets org-superstar modus-vivendi-theme magit-find-file tramp-term flymake-shell lsp-mode company-dict dired-icon helm-books anki-connect anki-editor org-capture-pop-frame counsel-org-capture-string ivy-omni-org crontab-mode poet-theme helpful dired-hide-dotfiles hide-mode-line sexy-monochrome-theme yoshi-theme color-theme-sanityinc-tomorrow panda-theme zen-and-art-theme elfeed elfeed-score org-beautify-theme org-super-agenda hl-sentence evil-goggles evil-magit zotelo ivy-rich neotree zweilight-theme command-log-mode persp-mode persp-mode-projectile-bridge zeno-theme yasnippet-snippets winum white-theme wc-mode use-package spacemacs-theme shrink-path request rebecca-theme projectile org-roam-server org-roam-bibtex org-ref org-evil olivetti mixed-pitch markdown-mode magit ivy-bibtex hl-todo evil-snipe evil-org emacsql-sqlite doom-themes dictionary delight deft crux counsel company-org-roam avy amx all-the-icons)))
  '(pdf-view-midnight-colors (cons "#D8DEE9" "#1B2B34"))
- '(persp-mode t nil (persp-mode))
  '(rustic-ansi-faces
    ["#1B2B34" "#EC5f67" "#99C794" "#FAC863" "#6699CC" "#E27E8D" "#5FB3B3" "#D8DEE9"])
- '(safe-local-variable-values
-   (quote
-    ((org-num-max-level . 1)
-     (eval if
-	   (not org-num-mode)
-	   (org-num-mode 1))
-     (eval org-num-mode t)
-     (eval org-num-mode
-	   (quote toggle))
-     (org-todo-keywords quote
-			((sequence "READ(R)" "ACTV(a)")))
-     (org-todo-keywords quote
-			((sequence "TODO(t)" "ACTV(a)")))
-     (org-todo-keywords quote
-			("READ"))
-     (org-num-mode . t)
-     (display-line-numbers . t)
-     (org-log-refile . time)
-     (org-log-done-with-time . t)
-     (org-log-done . time))))
  '(vc-annotate-background "#1B2B34")
  '(vc-annotate-background-mode nil)
  '(vc-annotate-color-map
@@ -384,4 +375,8 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(border ((t (:background "red")))))
+
+
+
+
 
