@@ -1,22 +1,3 @@
-go run snoowall-cli.go wallpaper
-go run snoowall-cli.go wallpaper
-go run snoowall-cli.go wallpaper
-go run snoowall-cli.go wallpaper
-go run snoowall-cli.go earthporn
-go build snoowall-cli.go
-go run snoowall-cli.go
-go run snoowall-cli.go wallpaper
-go build snoowall-cli.go
-go build snoowall-cli.go
-go build snoowall-cli.go
-go build snoowall-cli.go
-go run snoowall-cli.go
-go run snoowall-cli.go
-go run snoowall-cli.go
-go build snoowall-cli.go
-go build snoowall-cli.go
-go run snoowall-cli.go
-ls
 cat notes 
 go run test.go
 go run test.go
@@ -126,3 +107,22 @@ hugo server -D
 cd ../..
 hugo server -D
 dots
+ls
+go build snoowall-cli.go
+go run snoowall-cli.go gmbwallpapers
+go run snoowall-cli.go gmbwallpapers
+go run snoowall-cli.go gmbwallpapers
+go run snoowall-cli.go gmbwallpapers
+python main.py 
+python main.py 
+cd ~/Dropbox/Notes/Kindle\ \(Case\ Conflict\)/
+ls
+cd ..
+ls
+cd kindle/
+ls
+python main.py 
+rm -r ~/Dropbox/Notes/kindle/
+python main.py 
+python main.py 
+python main.py 

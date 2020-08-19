@@ -2,7 +2,17 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("polybar/config"
+(("snippets"
+ (filename . "~/.emacs.d/snippets/")
+ (front-context-string . "markdown-mode\n  ")
+ (rear-context-string . "96 Jun 25 21:08 ")
+ (position . 217))
+("my-faces.el"
+ (filename . "~/.emacs.d/custom/my-faces.el")
+ (front-context-string . ";;; my-faces.el ")
+ (rear-context-string)
+ (position . 1))
+("polybar/config"
  (filename . "~/.config/polybar/config")
  (front-context-string . "================")
  (rear-context-string)
@@ -23,13 +33,13 @@
  (rear-context-string . "Bookmarks bmenu\n")
  (position . 5085))
 ("org-refile-last-stored"
- (filename . "~/Dropbox/Notes/org/inbox.org")
- (front-context-string . "** I've started ")
- (rear-context-string . "onely.\n* August\n")
- (position . 13028))
+ (filename . "~/Dropbox/Notes/org/todo.org")
+ (front-context-string . "** TODO org-roam")
+ (rear-context-string . "01 Sun 12:08]\n\n\n")
+ (position . 1999))
 ("org-capture-last-stored"
- (filename . "~/Dropbox/Notes/org/knowledgebase/20200811152836-political_theory.org")
- (front-context-string . "#+title: Politic")
+ (filename . "~/Dropbox/Notes/org/knowledgebase/20200819095930-catell_s_16_personality_traits.org")
+ (front-context-string . "#+title: Catell'")
  (rear-context-string)
  (position . 1))
 ("init.el"

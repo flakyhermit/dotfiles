@@ -5,9 +5,9 @@
 
 * ${1:Word}
 :PROPERTIES:
-:ANKI_NOTE_TYPE:	Basic
-:ANKI_DECK: 		English
-:ADDED: 		`(format-time-string "[%Y-%m-%d %a]")`
+:ANKI_NOTE_TYPE: Basic
+:ANKI_DECK: English
+:ADDED: `(format-time-string "[%Y-%m-%d %a]")`
 :END:
 ** Front
 $1

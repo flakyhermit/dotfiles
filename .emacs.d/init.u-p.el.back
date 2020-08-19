@@ -1,0 +1,327 @@
+;; This is only needed once, near the top of the file  -*- mode: emacs-lisp; -*-
+;; (eval-when-compile
+;;   ;; Following line is not needed if use-package.el is in ~/.emacs.d
+;;   (add-to-list 'load-path "~/.emacs.d/elpa/use-package-2020629.1856")
+;;   (require 'use-package))
+(require 'package)
+(package-initialize)
+(require 'use-package)
+
+;; Add MELPA to package archives
+(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
+
+;; Set backup directory
+(setq backup-directory-alist `(("." . "~/.saves")))
+
+;; Set default frame size
+(add-to-list 'default-frame-alist '(height . 34))
+(add-to-list 'default-frame-alist '(width . 110))
+
+;; Disable all GUI crap
+(tool-bar-mode 0)
+(menu-bar-mode 0)
+(scroll-bar-mode 0)
+
+;; Disable the ugly Emacs bull and the info
+(setq inhibit-startup-message t)
+(setq initial-scratch-message nil)
+
+;; Enable basic minor modes
+(global-visual-line-mode t)
+
+;; Set theme
+(load-theme 'doom-material t)
+
+;; Set custom face settings
+(set-face-attribute 'default nil :font "Jetbrains Mono-11" )
+(set-face-attribute 'variable-pitch nil :font "Iosevka Sparkle-11.5" :weight 'regular)
+(set-face-attribute 'fixed-pitch nil :inherit 'default)
+
+(global-set-key (kbd "C-(") 'evil-prev-buffer)
+(global-set-key (kbd "C-)") 'evil-next-buffer)
+(global-set-key (kbd "C-x d") (lambda() (interactive) (dired default-directory)))
+(global-set-key (kbd "C-x C-d") 'dired)
+(global-set-key (kbd "C-x C-k") 'kill-bufFer)
+(global-set-key (kbd "C-x k") 'kill-this-buffer)
+(global-set-key (kbd "C-c d") 'sdcv-search-pointer)
+(global-set-key (kbd "M-`") 'other-window)
+
+;; recentf ---------------------
+(setq recentf-max-saved-items 100)
+
+;; After init hook
+(add-hook 'after-init-hook (lambda()
+			     (global-company-mode 1)
+			     (recentf-mode 1)
+			     (ivy-mode 1)
+			     (amx-mode 1)
+			     (evil-mode 1)
+			     (counsel-mode 1)
+			     (projectile-mode 1)
+			     (org-roam-mode 1)
+			     (evil-snipe-mode 1)
+			     (load "./my-faces.el")))
+
+;; Custom functions
+(defun custom/editing-mode()
+  (variable-pitch-mode 1)
+  (setq-local line-spacing 2)
+  (setq-local left-margin-width 2)
+  (setq-local right-margin-width 2))
+
+;; Major-mode visual hooks
+(add-hook 'fundamental-mode-hook (lambda ()))
+(add-hook 'prog-mode-hook (lambda ()
+			    (display-line-numbers-mode 1)
+			    (hl-line-mode 1)
+			    (hl-todo-mode 1)))
+(add-hook 'conf-mode-hook (lambda()
+			    (display-line-numbers-mode 1)
+			    (hl-line-mode 1)
+			    (hl-todo-mode 1)))
+(add-hook 'text-mode-hook (lambda ()
+			    (custom/editing-mode)
+			    (flyspell-mode 1)
+			    (display-line-numbers-mode -1)))
+
+;; Custom extensions (from $EMACS_HOME/custom)
+;; (require 'personal-journal)
+
+;; Package configuartions
+(require 'use-package)
+
+;; recentf ------------------------
+(use-package recentf
+  :config
+  (setq recentf-max-saved-items 100)
+  (recentf-mode t))
+
+;; evil ---------------------------
+(use-package evil)
+
+;; crux ---------------------------
+(use-package crux
+  :defer t
+  :bind
+  (:map ctl-x-map
+	("C-r" . crux-recentf-find-file)
+	("C-_" . crux-delete-file-and-buffer)))
+
+;; ivy ----------------------------
+(use-package ivy
+  :config
+  (setq ivy-height 13
+	ivy-wrap t)
+  :init
+  (add-hook 'after-init-hook 'ivy-mode))
+
+;; ivy-rich -----------------------
+(use-package ivy-rich
+  :after ivy
+  :hook (ivy-mode . ivy-rich-mode))
+
+;; amx ----------------------------
+(use-package amx
+  :after ivy
+  :config (setq amx-backend 'auto)
+  :hook (ivy-mode . amx-mode))
+
+;; counsel ------------------------
+(use-package counsel
+  :after ivy
+  :hook (ivy-mode . counsel-mode))
+
+;; ace-window ---------------------
+(use-package ace-window
+  :bind
+  ("M-o" . ace-window))
+
+;; avy ----------------------------
+(use-package avy
+  :defer t
+  :config (avy-setup-default))
+
+;; projectile ---------------------
+(use-package projectile
+  :config (setq projectile-completion-system 'ivy
+		projectile-mode-line-function '(lambda () (format " [%s]" (projectile-project-name))))
+  :bind
+  ("C-x p p" . projectile-switch-project)
+  ("C-x p f" . projectile-find-file)
+  ("C-x p n" . projectile-add-known-project))
+
+;; magit --------------------------
+(use-package magit
+  :defer t
+  :bind
+  ("C-x g" . magit-status))
+
+;; evil-snipe ---------------------
+(use-package evil-snipe
+  :defer t
+  :config
+  (setq evil-snipe-scope 'buffer)
+  :hook (evil-mode . evil-snipe-mode))
+
+;; olivetti -----------------------
+(use-package olivetti
+  :defer t
+  :config
+  (setq olivetti-body-width 120)
+  :bind
+  ("C-x t o" . olivetti-mode))
+
+;; mixed-pitch-mode ---------------
+(use-package mixed-pitch-mode
+  :defer t
+  :hook (markdown-mode org-mode))
+
+;; markdown-mode ------------------
+(use-package markdown-mode)
+
+;; wc-mode ------------------------
+(use-package wc-mode
+  :defer t
+  :config
+  (setq wc-modeline-format "%tw")
+  :hook markdown-mode)
+
+;; helpful-mode -------------------
+(use-package helpful-mode
+  :defer t
+  :bind
+  ("C-h v" . helpful-variable)
+  ("C-h f" . helpful-function)
+  ("C-h k" . helpful-key))
+  
+;; yasnippet ----------------------
+(use-package yasnippet
+  :hook (org-mode . yas-minor-mode))
+
+;; yasnippet-snippets -------------
+(use-package yasnippet-snippets)
+
+;; anki-editor --------------------
+(use-package anki-editor
+  :defer t
+  :bind
+  ("C-c x a" . anki-editor-insert-note)
+  ("C-c x p" . anki-editor-push-notes))
+
+;; org ----------------------------
+(use-package org
+  :config
+  (setq org-directory "~/Dropbox/Notes/org"
+	org-return-follows-link t
+	org-todo-keywords '((sequence "TODO(t)" "ACTV(a)" "REFL(r)" "HOLD(h)" "|" "DONE(d)"))
+	org-inbox-file "~/Dropbox/Notes/org/inbox.org"
+	org-agenda-files '("~/Dropbox/Notes/org" "~/Dropbox/Notes/org/journal")
+	org-refile-targets '((org-inbox-file :maxlevel . 2)
+			     ("~/Dropbox/Notes/org/emacs.org" :maxlevel . 1)
+			     ("~/Dropbox/Notes/org/todo.org" :maxlevel . 2)
+			     ("~/Dropbox/Notes/org/lists/books.org" :maxlevel . 3))
+	org-startup-with-inline-images t
+	;; org-indent-indentation-per-level 1
+	;; org-adapt-indentation nil
+	org-hide-emphasis-markers t
+	org-capture-templates
+	`(("t" "Add a TODO" entry
+	   (file ,(concat org-directory "/todo.org")) 
+	   "* TODO %?\n")
+	  ("T" "Just a THOUGHT" entry
+	   (file ,(concat org-directory "/inbox.org"))
+	   "* %?\n")
+	  ("Q" "A QUOTE" entry
+	   (file ,(concat org-directory "/quotes.org"))
+	   "* %?\n\n")
+	  ("b" "Add a BLOG post IDEA" entry
+	   (file ,(concat org-directory "/blog-post-ideas.org")) 
+	   "* %?\n")
+	  ("B" "Add a BOOK to the 'considering' list" entry
+	   (file+olp ,(concat org-directory "/lists/books.org") "Considering")
+	   "* %?\n")
+	  ("r" "Add an ARTICLE to read later" checkitem
+	   (file+olp+datetree ,(concat org-directory "/lists/read-later.org"))
+	   "- [ ] %:annotation %?\n")
+	  ("e" "An Emacs customization idea" entry
+	   (file+headline ,(concat org-directory "/emacs.org") "To-do")
+	   "* TODO %? \n\n")))
+  :bind
+  ("C-c a" . org-agenda)
+  ("C-c c" . org-capture)
+  (:map org-mode-map
+	("C-c C-q" . counsel-org-tags)))
+  
+;; org-journal -------------------
+(use-package org-journal
+  :defer t
+  :config
+  (setq org-journal-dir (concat org-directory "/journal")
+	org-journal-file-type 'monthly
+	org-journal-file-format "%Y-%m-%d"
+	org-journal-date-format "%A, %d %B %Y"
+	org-journal-prefix-key (kbd "C-c j"))
+  :bind
+  (:map org-mode-map
+	("C-c j n" . org-journal-new-entry)))
+
+;; org-journal -------------------
+(use-package org-roam
+  :config
+  (setq org-roam-directory (concat org-directory "/knowledgebase")
+	org-roam-capture-templates `(("d" "default" plain #'org-roam-capture--get-point "\n- refereneces :: \n- tags :: %?\n\n" :file-name "%<%y%m%d%h%m%s>-${slug}" :head "#+title: ${title}\n#+created: %u\n" :unnarrowed t)))
+  :init
+  (add-hook 'after-init-hook 'org-roam-mode)
+  :bind
+  ("C-c n l" . org-roam-buffer-toggle-display)
+  ("C-c n f" . org-roam-find-file)
+  ("C-c n g" . org-roam-show-graph)
+  ("C-c n i" . org-roam-insert))
+
+;; anki-editor -------------------
+(use-package anki-editor
+  :defer t
+  :bind
+  (:map org-mode-map
+	("C-c x p" . anki-editor-push-notes)
+	("C-c x a" . anki-editor-insert-note)))
+
+;; company-org-roam --------------
+(use-package company-org-roam
+  :config
+  (push 'company-org-roam company-backends))
+
+;; org-bullets-mode --------------
+(use-package org-bullets-mode
+  :defer t
+  :after org
+  :hook org-mode)
+
+;; deft ---------------------------
+(use-package deft
+  :config
+  (setq deft-directory "~/Dropbox/Notes/org"
+	deft-recursive t
+	deft-auto-save-interval -1.0
+	deft-extensions '("org")
+	deft-default-extension "org")
+  :bind
+  ("<f8>" . deft)
+  ("C-c f" . deft-find-file))
+
+;; delight ------------------------
+(use-package delight
+  :config
+  (delight '((emacs-lisp-mode "elisp" :major)
+	   (org-indent-mode nil org-indent)
+	   (buffer-face-mode nil t)
+	   (mixed-pitch-mode nil mixed-pitch)
+	   (eldoc-mode nil "eldoc")
+	   (ivy-mode nil ivy)
+	   (org-roam-bibtex-mode nil org-roam-bibtex)
+	   (org-roam-mode nil org-roam)
+	   (counsel-mode nil counsel)
+	   (evil-snipe-local-mode nil evil-snipe)
+	   (visual-line-mode nil t)
+	   (undo-tree-mode nil undo-tree))))
+
