@@ -1,47 +1,73 @@
-;; ADDED by Package.el. This must come before configurations of
-;; installed packages.  Don't delete this line.  If you don't want it,
-;; just comment it out by adding a semicolon to the start of the line.
-; You may delete these explanatory comments.
-(require 'package)
+;; Emacs init file
+;; Jewel James
 
-;; Add MELPA repo
-(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t)
-(setq package-load-list '(all))
-(package-initialize)
+;; DO NOT EDIT THIS BLOCK ---------------------------
+;; Bootstrap straight.el
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+      (bootstrap-version 5))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
 
-;; Set custom theme directory
-(setq custom-theme-directory "~/.emacs.d/themes")
+;; Use straight.el to install all listed packages
+;; To add a new package, add it to the list in package-list.el
+(load-file (expand-file-name "package-list.el" user-emacs-directory))
+(mapc (lambda(package-name)
+	(straight-use-package package-name)) package-list)
+;; END OF BLOCK -------------------------------------
+
+;; Change garbage collection threshold for faster loading
+(setq gc-cons-threshold 100000000
+      gc-cons-percentage 0.6)
+;; Disabling some stuff during startup
+(defvar file-name-handler-alist--save file-name-handler-alist)
+(setq file-name-handler-alist nil)
+
+;; Basic configurations
+(add-to-list 'load-path "~/.emacs.d/custom")
+
+;; Load the theme
+(load-theme 'doom-wilmersdorf t)
+
+;; Setup alternate directory for backups
 (setq backup-directory-alist `(("." . "~/.saves")))
 
+;; Inhibit the splash screen and message
+(setq inhibit-startup-message t)
+(setq initial-scratch-message nil)
+
 ;; Set default frame size
-(add-to-list 'default-frame-alist '(height . 34))
-(add-to-list 'default-frame-alist '(width . 110))
+(add-to-list 'default-frame-alist '(height . 40))
+(add-to-list 'default-frame-alist '(width . 115))
 
 ;; Disable all GUI crap
 (tool-bar-mode 0)
 (menu-bar-mode 0)
-;; (scroll-bar-mode 0)
+(scroll-bar-mode 0)
 
-; Enable basic minor modes
-(global-visual-line-mode t)
-(column-number-mode t)
-(winner-mode t)
-
-;; Disable the ugly Emacs bull and the info
-(setq inhibit-startup-message t)
-(setq initial-scratch-message nil)
-
-;; Set theme
-(load-theme 'modus-operandi t)
+;; After-init hook
+(add-hook 'after-init-hook (lambda()
+			     (global-visual-line-mode +1)
+			     (column-number-mode +1)
+			     (winner-mode +1)
+			     (global-company-mode +1)
+			     ;; Third-party
+			     (evil-mode +1)))
 
 ;; Set custom face settings
 (set-face-attribute 'default nil :font "Jetbrains Mono-11" )
-(set-face-attribute 'variable-pitch nil :font "Iosevka Etoile-11.5")
+(set-face-attribute 'variable-pitch nil :font "Iosevka Sparkle-11.5")
 (set-face-attribute 'fixed-pitch nil :inherit 'default)
 (set-face-attribute 'font-lock-comment-face nil :inherit 'default :italic nil)
 
 ;; Global keybindings
-(global-set-key (kbd "<backtab>") 'next-buffer)
 (global-set-key (kbd "C-x C-t") 'eshell)
 (global-set-key (kbd "C-x k") 'kill-this-buffer)
 (global-set-key (kbd "C-(") 'evil-prev-buffer)
@@ -50,25 +76,13 @@
 (global-set-key (kbd "C-x C-d") 'dired)
 (global-set-key (kbd "C-c d") 'sdcv-search-pointer)
 
-;; Enable line numbers by default
-;; (global-display-line-numbers-mode)
-
-;; Safe-local variables
-(setq safe-local-variable-values '((avy-words . s)
-				   (org-num-max-level . 1)
-				   (org-num-mode . t)
-				   (display-line-numbers . t)
-				   (org-log-refile . time)
-				   (org-log-done . time)))
-
 ;; Custom function definitions
-(defun custom/editing-mode()
+(defun xm/editing-mode()
   (variable-pitch-mode 1)
   (setq-local line-spacing 2)
   (setq-local left-margin-width 2)
   (setq-local right-margin-width 2))
 
-;; Major-mode visual hooks
 (add-hook 'prog-mode-hook (lambda ()
 			    (display-line-numbers-mode 1)
 			    (hl-line-mode 1)
@@ -78,31 +92,49 @@
 			    (hl-line-mode 1)
 			    (hl-todo-mode 1)))
 (add-hook 'text-mode-hook (lambda ()
-			    (custom/editing-mode)
+			    (xm/editing-mode)
 			    (flyspell-mode 1)
 			    (display-line-numbers-mode -1)))
-
 ;; Custom extensions
 (add-to-list 'load-path "~/.emacs.d/custom")
-(require 'personal-journal)
+;; (require 'personal-journal)
 
 ;; recentf ------------------------
 (setq recentf-max-saved-items 100)
 (recentf-mode t)
 
 ;; evil ---------------------------
-(evil-mode 1)
+(setq evil-want-C-u-scroll t
+      evil-want-keybinding nil)
+(defun xm/save-and-kill-this-buffer ()
+  "Save the current buffer and then kill it; Same as Vim's ':wq'"
+  (interactive)
+  (save-buffer)
+  (kill-this-buffer))
+(with-eval-after-load 'evil-maps ; avoid conflict with company tooltip selection
+  (define-key evil-insert-state-map (kbd "C-n") nil)
+  (define-key evil-insert-state-map (kbd "C-p") nil))
+(with-eval-after-load 'evil
+  (evil-ex-define-cmd "q" #'kill-this-buffer)
+  (evil-ex-define-cmd "wq" #'xm/save-and-kill-this-buffer))
 
 ;; crux ---------------------------
 (define-key ctl-x-map (kbd "C-r") 'crux-recentf-find-file)
 (define-key ctl-x-map (kbd "C-_") 'crux-delete-file-and-buffer)
 (define-key global-map (kbd "<f9>") 'crux-visit-term-buffer)
 
+;; ido ----------------------------
+(setq ido-everywhere t
+      ido-enable-flex-matching t)
+(ido-mode +1)
+(ido-ubiquitous-mode +1)
+(ido-yes-or-no-mode +1)
+
 ;; ivy ----------------------------
-(setq ivy-height 13
+(setq ivy-height 8
       ivy-wrap t)
-(ivy-mode 1)
-(add-hook 'ivy-mode-hook #'ivy-rich-mode)
+;; (ivy-mode 1)
+;; (add-hook 'ivy-mode-hook #'ivy-rich-mode)
 
 ;; amx ----------------------------
 (setq amx-backend 'auto)
@@ -110,19 +142,21 @@
 
 ;; counsel ------------------------
 (define-key ctl-x-map (kbd "C-b") 'persp-switch-to-buffer)
-(counsel-mode)
+;; (counsel-mode)
 
 ;; avy ----------------------------
 (define-key global-map (kbd "C-;") 'avy-goto-line)
-(avy-setup-default)
+;; (avy-setup-default)
 
 ;; dired --------------------------
-(add-hook 'dired-mode-hook #'dired-hide-details-mode)
-(add-hook 'dired-mode-hook #'dired-hide-dotfiles-mode)
-(define-key dired-mode-map "-" 'dired-up-directory)
+(setq dired-du-size-format t)
+(with-eval-after-load 'dired
+  (add-hook 'dired-mode-hook #'dired-hide-details-mode)
+  (add-hook 'dired-mode-hook #'dired-hide-dotfiles-mode)
+  (define-key dired-mode-map "-" 'dired-up-directory))
 
 ;; projectile ---------------------
-(setq projectile-completion-system 'ivy
+(setq projectile-completion-system 'ido
       projectile-mode-line-function '(lambda () (format " [%s]" (projectile-project-name))))
 (projectile-mode 1)
 (define-key global-map (kbd "C-x p p") 'projectile-switch-project)
@@ -131,7 +165,7 @@
 
 ;; persp-mode ---------------------
 (setq persp-nil-name "-")
-(persp-mode 0)
+;; (persp-mode 0)
 
 ;; magit --------------------------
 (define-key ctl-x-map (kbd "g") 'magit-status)
@@ -146,30 +180,32 @@
 (add-hook 'olivetti-mode-hook 'hide-mode-line-mode)
 
 ;; markdown-mode ------------------
-(require 'markdown-mode)
+;; (require 'markdown-mode)
 (setq wc-modeline-format "%tw")
-(add-hook 'markdown-mode-hook 'wc-mode)
-(add-hook 'markdown-mode-hook 'mixed-pitch-mode)
+(with-eval-after-load 'markdown-mode
+  (add-hook 'markdown-mode-hook 'wc-mode)
+  (add-hook 'markdown-mode-hook 'mixed-pitch-mode))
 
 ;; mixed-pitch-mode ---------------
-(require 'mixed-pitch)
-(add-to-list 'mixed-pitch-fixed-pitch-faces 'org-tag)
-(add-to-list 'mixed-pitch-fixed-pitch-faces 'org-done)
+(with-eval-after-load 'mixed-pitch
+  (diminish 'mixed-pitch-mode)
+  (add-to-list 'mixed-pitch-fixed-pitch-faces 'org-tag)
+  (add-to-list 'mixed-pitch-fixed-pitch-faces 'org-done))
 
 ;; helpful-mode
-(require 'helpful)
 (global-set-key (kbd "C-h v") 'helpful-variable)
 (global-set-key (kbd "C-h f") 'helpful-function)
 (global-set-key (kbd "C-h k") 'helpful-key)
 
 ;; yas ---------------------------
-(require 'yasnippet)
-(yas-reload-all)
+;; (require 'yasnippet)
+;; (yas-reload-all)
+;; (add-hook 'yas-minor-mode-hook 'yas-reload-all)
 
 ;; org ----------------------------
 (setq org-directory "~/Dropbox/Notes/org"
       org-return-follows-link t
-      org-todo-keywords '((sequence "TODO(t)" "ACTV(a)" "REFL(r)" "HOLD(h)" "|" "DONE(d)"))
+      org-todo-keywords '((sequence "TODO(t)" "ACTV(a)" "REFL(r)" "|" "HOLD(h)" "DONE(d)"))
       org-inbox-file "~/Dropbox/Notes/org/inbox.org"
       org-agenda-files '("~/Dropbox/Notes/org")
       org-refile-targets '((org-inbox-file :maxlevel . 2)
@@ -204,12 +240,13 @@
 	"* TODO %? \n\n")))
 (define-key mode-specific-map (kbd "a") 'org-agenda)
 (define-key mode-specific-map (kbd "c") 'counsel-org-capture)
-(require 'org)
-(define-key org-mode-map (kbd "C-c C-q") 'counsel-org-tag)
-(add-hook 'org-mode-hook #'org-indent-mode)
-(add-hook 'org-mode-hook #'yas-minor-mode)
-(add-hook 'org-mode-hook #'org-bullets-mode)
-(add-hook 'org-mode-hook #'mixed-pitch-mode)
+(with-eval-after-load 'org
+  (define-key org-mode-map (kbd "C-c C-q") 'counsel-org-tag)
+  (add-hook 'org-mode-hook 'org-indent-mode)
+  (add-hook 'org-mode-hook 'yas-minor-mode)
+  ;; (add-hook 'org-mode-hook 'org-bullets-mode)
+  (add-hook 'org-mode-hook 'mixed-pitch-mode))
+
 
 ;; org-journal --------------------
 (setq org-journal-dir (concat org-directory "/journal")
@@ -219,9 +256,9 @@
 (global-set-key (kbd "C-c j n") 'org-journal-new-entry)
 
 ;; anki-editor --------------------
-(require 'anki-editor)
-(define-key org-mode-map (kbd "C-c x a") 'anki-editor-insert-note)
-(define-key org-mode-map (kbd "C-c x p") 'anki-editor-push-notes)
+;; (require 'anki-editor)
+;; (define-key org-mode-map (kbd "C-c x a") 'anki-editor-insert-note)
+;; (define-key org-mode-map (kbd "C-c x p") 'anki-editor-push-notes)
 (setq anki-editor-create-decks t 
       anki-editor-org-tags-as-anki-tags t)
 ;; (add-hook 'org-mode-hook #'anki-editor-mode)
@@ -234,7 +271,7 @@
       deft-default-extension "org")
 (define-key global-map (kbd "<f8>") 'deft)
 (define-key mode-specific-map (kbd "f") 'deft-find-file)
-(add-hook 'deft-mode-hook #'custom/editing-mode)
+;; (add-hook 'deft-mode-hook #'custom/editing-mode)
 
 ;; org-ref ------------------------
 (setq org-ref-completion-library 'org-ref-ivy-cite)
@@ -253,6 +290,8 @@
 (define-key mode-specific-map (kbd "n g") 'org-roam-show-graph)
 (define-key mode-specific-map (kbd "n i") 'org-roam-insert)
 (add-hook 'org-roam-mode-hook 'org-roam-bibtex-mode)
+(with-eval-after-load 'company
+  (push 'company-org-roam company-backends))
 
 ;; org-roam-bibtex ----------------
 (org-roam-bibtex-mode 1)
@@ -263,120 +302,15 @@
      :head "#+title: ${title}\n#+roam_key: ${ref}\n\n" ; <--
      :unnarrowed t)))
 
-;; delight ------------------------
-(delight '((emacs-lisp-mode "elisp" :major)
-	   (org-indent-mode nil org-indent)
-	   (buffer-face-mode nil t)
-	   (mixed-pitch-mode nil mixed-pitch)
-	   (eldoc-mode nil "eldoc")
-	   (ivy-mode nil ivy)
-	   (org-roam-bibtex-mode nil org-roam-bibtex)
-	   (org-roam-mode nil org-roam)
-	   (counsel-mode nil counsel)
-	   (evil-snipe-local-mode nil evil-snipe)
-	   (visual-line-mode nil t)
-	   (undo-tree-mode nil undo-tree)))
+;; diminish------------------------
+(setq diminished-modes
+      '(org-roam-mode org-indent-mode ivy-mode counsel-mode evil-snipe-mode undo-tree-mode org-roam-bibtex-mode company-mode mixed-pitch-mode visual-line-mode evil-snipe-local-mode buffer-face-mode))
+(add-hook 'emacs-startup-hook (lambda() (mapc (lambda(minor-mode) (diminish minor-mode)) diminished-modes)))
 
 (load "./my-faces.el")
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(ansi-color-faces-vector
-   [default bold shadow italic underline success warning error])
- '(ansi-color-names-vector
-   ["#1B2B34" "#EC5f67" "#99C794" "#FAC863" "#6699CC" "#E27E8D" "#5FB3B3" "#D8DEE9"])
- '(ansi-term-color-vector
-   [unspecified "#FFFFFF" "#d15120" "#5f9411" "#d2ad00" "#6b82a7" "#a66bab" "#6b82a7" "#505050"] t)
- '(custom-safe-themes
-   (quote
-    ("a27c00821ccfd5a78b01e4f35dc056706dd9ede09a8b90c6955ae6a390eb1c1e" default)))
- '(elfeed-feeds
-   (quote
-    ("https://feeds.feedburner.com/TechCrunch/" "https://www.theverge.com/" "https://longreads.com/")))
- '(fci-rule-character-color "#d9d9d9")
- '(fci-rule-color "#C0C5CE")
- '(flymake-error-bitmap
-   (quote
-    (flymake-double-exclamation-mark modus-theme-fringe-red)))
- '(flymake-note-bitmap (quote (exclamation-mark modus-theme-fringe-cyan)))
- '(flymake-warning-bitmap (quote (exclamation-mark modus-theme-fringe-yellow)))
- '(highlight-tail-colors (quote (("#aecf90" . 0) ("#c0efff" . 20))))
- '(hl-todo-keyword-faces
-   (quote
-    (("TODO" . "#dc752f")
-     ("NEXT" . "#dc752f")
-     ("THEM" . "#2d9574")
-     ("PROG" . "#4f97d7")
-     ("OKAY" . "#4f97d7")
-     ("DONT" . "#f2241f")
-     ("FAIL" . "#f2241f")
-     ("DONE" . "#86dc2f")
-     ("NOTE" . "#b1951d")
-     ("KLUDGE" . "#b1951d")
-     ("HACK" . "#b1951d")
-     ("TEMP" . "#b1951d")
-     ("FIXME" . "#dc752f")
-     ("XXX+" . "#dc752f")
-     ("\\?\\?\\?+" . "#dc752f"))))
- '(ibuffer-deletion-face (quote modus-theme-mark-del))
- '(ibuffer-filter-group-name-face (quote modus-theme-mark-symbol))
- '(ibuffer-marked-face (quote modus-theme-mark-sel))
- '(ibuffer-title-face (quote modus-theme-header))
- '(ivy-rich-mode t)
- '(jdee-db-active-breakpoint-face-colors (cons "#1B2B34" "#FAC863"))
- '(jdee-db-requested-breakpoint-face-colors (cons "#1B2B34" "#99C794"))
- '(jdee-db-spec-breakpoint-face-colors (cons "#1B2B34" "#A7ADBA"))
- '(linum-format " %7i ")
- '(nrepl-message-colors
-   (quote
-    ("#ee11dd" "#8584ae" "#b4f5fe" "#4c406d" "#ffe000" "#ffa500" "#ffa500" "#DC8CC3")))
- '(objed-cursor-color "#EC5f67")
- '(org-agenda-files
-   (quote
-    ("~/Dropbox/Notes/org/vocabulary.org" "/home/monk/Dropbox/Notes/org/anand_podcast.org" "/home/monk/Dropbox/Notes/org/archlinux.org" "/home/monk/Dropbox/Notes/org/blog-post-ideas.org" "/home/monk/Dropbox/Notes/org/emacs-article.org" "/home/monk/Dropbox/Notes/org/emacs.org" "/home/monk/Dropbox/Notes/org/events.org" "/home/monk/Dropbox/Notes/org/higher-studies.org" "/home/monk/Dropbox/Notes/org/inbox.org" "/home/monk/Dropbox/Notes/org/latex.org" "/home/monk/Dropbox/Notes/org/minecraft.org" "/home/monk/Dropbox/Notes/org/music_theory.org" "/home/monk/Dropbox/Notes/org/observations.org" "/home/monk/Dropbox/Notes/org/podcasting_gear.org" "/home/monk/Dropbox/Notes/org/quotes.org" "/home/monk/Dropbox/Notes/org/r4r.org" "/home/monk/Dropbox/Notes/org/studies.org" "/home/monk/Dropbox/Notes/org/templates-for-dilemmas.org" "/home/monk/Dropbox/Notes/org/test.org" "/home/monk/Dropbox/Notes/org/thoughts.org" "/home/monk/Dropbox/Notes/org/todo.org")))
- '(package-selected-packages
-   (quote
-    (edit-indirect ivy-avy ivy-hydra sdcv dired-single dired-du helm-dired-history ivy-dired-history org-journal twilight-theme twilight-bright-theme vs-light-theme csv-mode anki-vocabulary go-complete go-eldoc golint flymake-golangci go-mode python-x evil-ediff svg-mode-line-themes twilight-anti-bright-theme weyland-yutani-theme modus-operandi-theme org-bullets org-superstar modus-vivendi-theme magit-find-file tramp-term flymake-shell lsp-mode company-dict dired-icon helm-books anki-connect anki-editor org-capture-pop-frame counsel-org-capture-string ivy-omni-org crontab-mode poet-theme helpful dired-hide-dotfiles hide-mode-line sexy-monochrome-theme yoshi-theme color-theme-sanityinc-tomorrow panda-theme zen-and-art-theme elfeed elfeed-score org-beautify-theme org-super-agenda hl-sentence evil-goggles evil-magit zotelo ivy-rich neotree zweilight-theme command-log-mode persp-mode persp-mode-projectile-bridge zeno-theme yasnippet-snippets winum white-theme wc-mode use-package spacemacs-theme shrink-path request rebecca-theme projectile org-roam-server org-roam-bibtex org-ref org-evil olivetti mixed-pitch markdown-mode magit ivy-bibtex hl-todo evil-snipe evil-org emacsql-sqlite doom-themes dictionary delight deft crux counsel company-org-roam avy amx all-the-icons)))
- '(pdf-view-midnight-colors (cons "#D8DEE9" "#1B2B34"))
- '(rustic-ansi-faces
-   ["#1B2B34" "#EC5f67" "#99C794" "#FAC863" "#6699CC" "#E27E8D" "#5FB3B3" "#D8DEE9"])
- '(vc-annotate-background "#1B2B34")
- '(vc-annotate-background-mode nil)
- '(vc-annotate-color-map
-   (list
-    (cons 20 "#99C794")
-    (cons 40 "#b9c783")
-    (cons 60 "#d9c773")
-    (cons 80 "#FAC863")
-    (cons 100 "#f9b55f")
-    (cons 120 "#f9a35b")
-    (cons 140 "#F99157")
-    (cons 160 "#f18a69")
-    (cons 180 "#e9847b")
-    (cons 200 "#E27E8D")
-    (cons 220 "#e57380")
-    (cons 240 "#e86973")
-    (cons 260 "#EC5f67")
-    (cons 280 "#da727b")
-    (cons 300 "#c98690")
-    (cons 320 "#b899a5")
-    (cons 340 "#C0C5CE")
-    (cons 360 "#C0C5CE")))
- '(vc-annotate-very-old-color nil)
- '(xterm-color-names
-   ["#000000" "#a60000" "#005e00" "#813e00" "#0030a6" "#721045" "#00538b" "#f0f0f0"])
- '(xterm-color-names-bright
-   ["#505050" "#972500" "#315b00" "#70480f" "#223fbf" "#8f0075" "#30517f" "#ffffff"]))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(border ((t (:background "red")))))
 
-
-
-
-
+;; Reset garbage-collection threshold
+(add-hook 'emacs-startup-hook (lambda()
+				(setq gc-cons-threshold 16777216
+				      gc-cons-percentage 0.1)
+				(setq file-name-handler-alist file-name-handler-alist--save)))
