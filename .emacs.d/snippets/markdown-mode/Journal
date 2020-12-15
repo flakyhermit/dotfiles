@@ -1,8 +1,0 @@
-# key: journal
-# name: Journal
-# --
-`(format-time-string "%I:%M %p, %d %B %Y")`
-
-# ${1:Title}
-
-$0

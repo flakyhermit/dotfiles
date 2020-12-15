@@ -3,8 +3,7 @@
 # --
 ${1:Title} - ${2:Author}
 :PROPERTIES:
-:ADDED: `(format-time-string "[%Y-%m-%d %a]")`
+:ADDED: `(let ((x (org-insert-time-stamp nil t t ))))`
 :AUTHOR: $2
-:RATING: 0.0
 :END:
 $0

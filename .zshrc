@@ -57,3 +57,7 @@ setxkbmap -option 'caps:escape'
 # Git for dotfiles
 alias dots='/usr/bin/git --git-dir=$HOME/.local/dotfiles --work-tree=$HOME'
 setxkbmap -option 'caps:escape'
+if [[ $(ps --no-header --pid=$PPID --format=cmd) != "fish" ]]
+then
+	exec fish
+fi

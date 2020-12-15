@@ -1,1 +1,0 @@
-((hackernews-link . #s(hash-table size 65 test eql rehash-size 1.5 rehash-threshold 0.8125 data (23851275 (:visited t :last-visited (24336 568 392809 679000)) 23856162 (:visited t :last-visited (24336 576 731154 466000))))) (hackernews-comment-count . #s(hash-table size 65 test eql rehash-size 1.5 rehash-threshold 0.8125 data ())))

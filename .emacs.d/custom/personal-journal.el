@@ -12,7 +12,19 @@
 (setq file-name-format 1
       journal-directory "~/Dropbox/Personal/Journal/")
   
+(defun my/journal-daily()
+  "Create a new 6-PM journal entry"
+  (interactive)
+  (setq filepath (concat "~/Dropbox/Notes/6_PMs/" (format-time-string "%F")))
+  (with-temp-file filepath
+    (insert "\n# " (format-time-string "%A, %d %B %Y") "\n\n"))
+  (find-file filepath)
+  (markdown-mode)
+  (goto-char (point-max)))
+(global-set-key (kbd "C-c j s") #'my/journal-daily)
+
 (defun my/journal-new-entry()
+  "Create a titled personal journal entry"
   (interactive)
 
   ;; Read the title 
@@ -35,5 +47,9 @@
   (find-file filepath)
   (goto-char (point-max))
   (evil-insert-state))
+
+(defun my/clip-snippets ()
+  (kill-new "FUCK"))
+  
 
 (provide 'personal-journal)

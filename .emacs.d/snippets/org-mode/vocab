@@ -1,20 +1,15 @@
 # -*- mode: snippet -*-
 # name: vocab
-# key: <vocab
+# key: <voc
 # --
 
-* ${1:Word}
+** ${1:Word}
 :PROPERTIES:
-:ANKI_NOTE_TYPE:	Basic
-:ANKI_DECK: 		English
-:ADDED: 		`(format-time-string "[%Y-%m-%d %a]")`
+:ANKI_NOTE_TYPE: Basic
+:ANKI_DECK: English
 :END:
-** Front
-$1
-** Back
-${2:Meaning}
-#+begin_quote
-/\"${3:Example sentence}\"/
-#+end_quote
+*** Front
+/$2 *$1*/
+*** Back
+$1 - ${3:Meaning}
 $0
-

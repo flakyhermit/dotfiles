@@ -25,6 +25,7 @@ foreground = #dfdfdf
 foreground-alt = #aaa
 primary = #ffb52a
 accent = #0080c4
+active = #1aff04
 secondary = #e60053
 alert = #bd2c40
 
@@ -60,7 +61,7 @@ module-margin-right = 1
 
 dim-value = 0.9
 
-font-0 = IBM Plex Mono Medium:size=12.5;1
+font-0 = JetBrains Mono Medium:size=12;1
 ;font-0 = fixed:pixelsize=13;1
 ;font-1 = unifont:fontformat=truetype:size=9:antialias=false;0
 ;font-2 = siji:pixelsize=10;1
@@ -102,7 +103,6 @@ label = %title:0:30:...%
 [module/xkeyboard]
 type = internal/xkeyboard
 blacklist-0 = num lock
-
 format-prefix = " "
 format-prefix-foreground = ${colors.foreground-alt}
 format-prefix-underline = ${colors.secondary}
@@ -243,7 +243,7 @@ interval = 3.0
 
 format-connected = <label-connected>
 ; format-connected = <ramp-signal> <label-connected>
-format-connected-underline = ${colors.accent}
+format-connected-underline = ${colors.active}
 label-connected = %essid%
 
 format-disconnected =
@@ -358,7 +358,7 @@ full-at = 9878
 
 format-charging = AC <label-charging>
 ;format-charging = <animation-charging> <label-charging>
-format-charging-underline = #1aff04
+format-charging-underline = ${colors.active}
 
 format-discharging =  Bat <label-discharging>
 ; format-discharging = <animation-discharging> <label-discharging>
@@ -400,11 +400,6 @@ label = %temperature-c%
 label-warn = %temperature-c%
 label-warn-foreground = ${colors.secondary}
 
-ramp-0 = 
-ramp-1 = 
-ramp-2 = 
-ramp-foreground = ${colors.foreground-alt}
-
 [module/powermenu]
 type = custom/menu
 
@@ -413,7 +408,7 @@ expand-right = true
 format-spacing = 1
 ; format-underline = ${colors.primary}
 
-label-open = (|) 
+label-open = [|] 
 label-open-foreground = ${colors.foreground-alt}
 label-close = X 
 label-close-foreground = ${colors.foreground-alt}

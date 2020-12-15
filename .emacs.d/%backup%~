@@ -1,5 +1,0 @@
-
-BACKUP_DIR=/home/monk/Backups
-SRC=/home/monk/Dropbox/Notes
-dupl=$(which duplicity)
-$dupl full $SRC file://$BACKUP_DIR/Notes --no-encryption
