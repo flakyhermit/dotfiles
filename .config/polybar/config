@@ -56,12 +56,12 @@ border-color = #00000000
 padding-left = 0
 padding-right = 1
 
-module-margin-left = 0
+module-margin-left = 1
 module-margin-right = 1
 
 dim-value = 0.9
 
-font-0 = JetBrains Mono Medium:size=12;1
+font-0 = Iosevka Aile:size=12;1
 ;font-0 = fixed:pixelsize=13;1
 ;font-1 = unifont:fontformat=truetype:size=9:antialias=false;0
 ;font-2 = siji:pixelsize=10;1
@@ -225,7 +225,7 @@ type = internal/cpu
 interval = 2
 format-prefix = "CPU "
 format-prefix-foreground = ${colors.foreground-alt}
-format-underline = ${colors.accent}
+; format-underline = ${colors.accent}
 label = %percentage:1%%
 
 [module/memory]
@@ -233,7 +233,7 @@ type = internal/memory
 interval = 2
 format-prefix = "Mem "
 format-prefix-foreground = ${colors.foreground-alt}
-format-underline = ${colors.accent} 
+; format-underline = ${colors.accent}
 label = %percentage_used%%
 
 [module/wlan]
