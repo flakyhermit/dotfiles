@@ -14,7 +14,7 @@ set $mod Mod4
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
 #font pango:monospace 8
-font pango:Iosevka SS04 10.5
+font pango:IBM Plex Sans Medium 10.5
 title_align center
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
@@ -172,3 +172,20 @@ client.focused #3b4252 #3b4252 #eeeeee #3b4252 #3b4252
 exec ~/.fehbg
 exec ~/.config/i3/autostart
 exec polybar main
+
+# KDE i3 settings
+# # general application settings
+for_window [window_role="pop-up"] floating enable
+for_window [class="plasmashell"] floating enable
+
+# close plasma desktop windows
+for_window [title="Desktop — Plasma"] kill;
+
+# disable focus
+no_focus [class="plasmashell"]
+no_focus [window_role="pop-up"]
+no_focus [window_type="notification"]
+
+focus_on_window_activation none
+focus_follows_mouse no
+mouse_warping none
