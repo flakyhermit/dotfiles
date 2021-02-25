@@ -179,7 +179,7 @@ for_window [window_role="pop-up"] floating enable
 for_window [class="plasmashell"] floating enable
 
 # close plasma desktop windows
-for_window [title="Desktop — Plasma"] kill;
+for_window [title="Desktop — Plasma"] kill
 
 # disable focus
 no_focus [class="plasmashell"]
