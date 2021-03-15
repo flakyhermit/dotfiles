@@ -157,6 +157,9 @@ mode "resize" {
 }
 
 bindsym $mod+r mode "resize"
+# Scratchpad
+bindsym $mod+minus scratchpad show
+bindsym $mod+shift+minus move scratchpad
 
 # Colors
 client.focused #3b4252 #3b4252 #eeeeee #3b4252 #3b4252
