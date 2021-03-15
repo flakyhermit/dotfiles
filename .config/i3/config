@@ -162,7 +162,7 @@ bindsym $mod+minus scratchpad show
 bindsym $mod+shift+minus move scratchpad
 
 # Colors
-client.focused #3b4252 #3b4252 #eeeeee #3b4252 #3b4252
+client.focused #2b5984 #2b5984 #eeeeee #2b5984 #2b5984
 
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
@@ -175,6 +175,10 @@ client.focused #3b4252 #3b4252 #eeeeee #3b4252 #3b4252
 exec ~/.fehbg
 exec ~/.config/i3/autostart
 exec polybar main
+
+# Floating windows
+for_window [class="Alacritty"] floating enable
+for_window [class="Artha"] floating enable
 
 # KDE i3 settings
 # # general application settings
