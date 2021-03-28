@@ -14,7 +14,7 @@ set $mod Mod4
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
 #font pango:monospace 8
-font pango:IBM Plex Sans Medium 10.5
+font pango:Iosevka Sparkle Medium 10
 title_align center
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
@@ -162,7 +162,7 @@ bindsym $mod+minus scratchpad show
 bindsym $mod+shift+minus move scratchpad
 
 # Colors
-client.focused #2b5984 #2b5984 #eeeeee #2b5984 #2b5984
+client.focused #3d3d5c #3d3d5c #eeeeee #3d3d5c #3d3d5c
 
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
