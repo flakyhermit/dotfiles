@@ -177,6 +177,7 @@ client.focused #3d3d5c #3d3d5c #eeeeee #3d3d5c #3d3d5c
 exec ~/.fehbg
 exec ~/.config/i3/autostart
 exec polybar main
+exec redshift
 
 # Floating windows
 for_window [class="Alacritty"] floating enable
