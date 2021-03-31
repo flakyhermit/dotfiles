@@ -173,10 +173,9 @@ client.focused #3d3d5c #3d3d5c #eeeeee #3d3d5c #3d3d5c
 #}
 
 # autostart
-# exec /usr/bin/pcloud
 exec ~/.fehbg
 exec ~/.config/i3/autostart
-exec polybar main
+# exec polybar main
 exec redshift
 
 # Floating windows
