@@ -1,0 +1,4 @@
+#!/usr/bin/bash
+export DROPBOX="$HOME/Dropbox"
+export ORG="$DROPBOX/Notes/org"
+export PROJECTS="$DROPBOX/Projects"
